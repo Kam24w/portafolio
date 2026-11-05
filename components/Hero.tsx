@@ -16,7 +16,7 @@ export default function Hero() {
       <div>
         <div className="hero-kicker mb-6 flex w-fit items-center gap-3 border border-mint/40 bg-[#020817]/70 px-3 py-2">
           <span className="pixel-label text-[0.5rem] text-mint">{hero.player}</span>
-          <span className="h-1 w-12 bg-signal" />
+          <span className="h-1 w-12 bg-signal" aria-hidden="true" />
           <span className="pixel-label text-[0.5rem] text-white/60">{hero.status}</span>
         </div>
         <h1 className="max-w-4xl font-display text-[clamp(3.5rem,9vw,8.5rem)] font-extrabold leading-[0.86] tracking-[-0.06em]">
@@ -33,7 +33,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-transparent to-transparent" />
         <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between text-paper">
           <span className="font-display text-xl font-bold">{hero.imageCaption}</span>
-          <span className="grid size-12 place-items-center rounded-full bg-signal text-2xl transition-transform duration-300 group-hover:rotate-45">↗</span>
+          <span aria-hidden="true" className="grid size-12 place-items-center rounded-full bg-signal text-2xl transition-transform duration-300 group-hover:rotate-45">↗</span>
         </div>
       </div>
     </section>
