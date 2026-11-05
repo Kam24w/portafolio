@@ -35,6 +35,15 @@ export default function Header() {
     };
   }, [navLinks]);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <header className="game-header sticky top-0 z-50 px-5 md:px-10">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-5 focus:top-5 focus:z-[60] focus:bg-signal focus:px-4 focus:py-2 focus:text-white">
