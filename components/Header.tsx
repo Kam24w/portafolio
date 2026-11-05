@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 /**
  * Header que organiza todo el portafolio.
@@ -10,7 +11,7 @@ import { useLanguage } from "./LanguageProvider";
  * y el menú marca la sección que se está viendo.
  */
 export default function Header() {
-  const { language, setLanguage, content } = useLanguage();
+  const { content } = useLanguage();
   const { navLinks, profile, header } = content;
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
@@ -75,13 +76,7 @@ export default function Header() {
               <a href="#contacto" className="nav-cta inline-block rounded-sm bg-signal px-4 py-2 font-medium text-white hover:brightness-110">{header.contact}</a>
             </li>
             <li className="mt-2 md:mt-0 md:ml-2">
-              <div className="flex items-center gap-1 rounded-sm border border-mint/40 p-1" aria-label={header.language}>
-                {(["es", "en"] as const).map((option) => (
-                  <button key={option} type="button" onClick={() => setLanguage(option)} aria-pressed={language === option} className={`px-2 py-1 text-[0.55rem] font-semibold ${language === option ? "bg-mint text-ink" : "text-mint/70 hover:text-mint"}`}>
-                    {option.toUpperCase()}
-                  </button>
-                ))}
-              </div>
+              <LanguageSwitcher label={header.language} />
             </li>
           </ul>
         </nav>
