@@ -1,43 +1,30 @@
 import type { Metadata } from "next";
-import { Figtree, Pixelify_Sans, Press_Start_2P } from "next/font/google";
+import type { ReactNode } from "react";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import { LanguageProvider } from "@/components/LanguageProvider";
-import { content } from "@/content/es";
 
-const pixelify = Pixelify_Sans({
-  subsets: ["latin"],
-  variable: "--font-pixelify",
-});
-
-const figtree = Figtree({
-  subsets: ["latin"],
-  variable: "--font-figtree",
-});
-
-const pressStart = Press_Start_2P({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-press-start",
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk" });
 
 export const metadata: Metadata = {
-  title: `${content.profile.name} | Portafolio`,
-  description: `Portafolio de ${content.profile.name}: proyectos, perfil y contacto.`,
+  title: "frayder camilo lopez · escritorio",
+  description:
+    "portafolio interactivo estilo escritorio de frayder camilo lopez, desarrollador full stack en formación.",
 };
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
+}: { children: ReactNode }) {
   return (
-    <html lang="es" className={`${pixelify.variable} ${figtree.variable} ${pressStart.variable}`}>
-      <body className="antialiased">
-        <LanguageProvider>
-          <Header />
-          <main id="main-content" tabIndex={-1} className="pt-28 md:pt-32">{children}</main>
-        </LanguageProvider>
+    <html lang="es" data-theme="light" suppressHydrationWarning>
+      <body className={`${inter.variable} ${grotesk.variable}`}>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "try{if(localStorage.getItem('fc-theme')==='dark'){document.documentElement.setAttribute('data-theme','dark')}}catch(e){}",
+          }}
+        />
+        {children}
       </body>
     </html>
   );
