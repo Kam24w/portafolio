@@ -2,12 +2,13 @@
 
 /* Tokens de diseño del portafolio */
 @theme inline {
-  --color-paper: #eef1f4;
-  --color-ink: #0f1b2d;
-  --color-signal: #3a3dff;
-  --color-mint: #b8f2e0;
-  --font-display: var(--font-bricolage), system-ui, sans-serif;
+  --color-paper: #07111f;
+  --color-ink: #e8f2ff;
+  --color-signal: #3546f5;
+  --color-mint: #5fe7ff;
+  --font-display: var(--font-pixelify), system-ui, sans-serif;
   --font-sans: var(--font-figtree), system-ui, sans-serif;
+  --font-pixel: var(--font-press-start), monospace;
 }
 
 html {
@@ -21,9 +22,240 @@ html {
 }
 
 body {
-  background: var(--color-paper);
+  background:
+    radial-gradient(circle at 15% 0%, rgb(53 70 245 / 0.2), transparent 28rem),
+    radial-gradient(circle at 90% 15%, rgb(95 231 255 / 0.1), transparent 24rem),
+    var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+  background-attachment: fixed;
+}
+
+.bg-ink {
+  background-color: #020817;
+}
+
+.text-paper {
+  color: #e8f2ff;
+}
+
+::selection {
+  background: var(--color-signal);
+  color: white;
+}
+
+.game-shell {
+  position: relative;
+}
+
+.game-header {
+  position: relative;
+  border-bottom: 1px solid rgb(95 231 255 / 0.18);
+  background:
+    linear-gradient(90deg, rgba(2, 8, 23, 0.76), rgba(2, 8, 23, 0.52) 35%, rgba(2, 8, 23, 0.7)),
+    url("/Banner%20para%20Linkedin%20programador%20con%20fotografia%20azul%20y%20blanco.png") center/cover no-repeat;
+  box-shadow: 0 8px 30px rgb(2 8 23 / 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.game-header::before {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(35, 101, 255, 0.12), transparent 35%, transparent 65%, rgba(55, 211, 255, 0.08));
+  content: "";
+  pointer-events: none;
+}
+
+.game-header__top {
+  border-bottom: 1px solid rgb(255 255 255 / 0.08);
+}
+
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--color-mint);
+  box-shadow: 0 0 12px var(--color-mint);
+  animation: blink 1.8s ease-in-out infinite;
+}
+
+.nav-link {
+  position: relative;
+  color: rgb(232 242 255 / 0.62);
+  font-size: 0.7rem;
+}
+
+.nav-link:hover,
+.nav-link[aria-current="true"] {
+  color: white;
+  background: rgb(53 70 245 / 0.28);
+}
+
+.nav-link[aria-current="true"]::before {
+  position: absolute;
+  top: 50%;
+  left: -4px;
+  width: 3px;
+  height: 3px;
+  background: var(--color-mint);
+  box-shadow: 0 0 8px var(--color-mint);
+  content: "";
+}
+
+.nav-cta,
+.game-button {
+  font-family: var(--font-pixel);
+  font-size: 0.55rem;
+  letter-spacing: 0.04em;
+}
+
+.game-button {
+  box-shadow: 4px 4px 0 rgb(95 231 255 / 0.5);
+}
+
+.game-button:hover {
+  box-shadow: 2px 2px 0 rgb(95 231 255 / 0.5);
+}
+
+.hero-kicker {
+  animation: rise-in 700ms both;
+}
+
+.game-shell::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(95 231 255 / 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(95 231 255 / 0.035) 1px, transparent 1px);
+  background-size: 32px 32px;
+  content: "";
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
+
+h1,
+h2,
+h3,
+button,
+nav,
+.font-display {
+  font-family: var(--font-display);
+  text-shadow: 0 0 24px rgb(53 70 245 / 0.12);
+}
+
+.pixel-label {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.04em;
+}
+
+section {
+  position: relative;
+}
+
+section::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 42px;
+  height: 6px;
+  border-right: 2px solid var(--color-mint);
+  border-bottom: 2px solid var(--color-mint);
+  content: "";
+  opacity: 0.7;
+}
+
+a {
+  transition: color 180ms ease, background-color 180ms ease, opacity 180ms ease;
+}
+
+.hero-orbit {
+  animation: orbit 12s linear infinite;
+}
+
+.hero-orbit-delay {
+  animation-delay: -5s;
+  animation-direction: reverse;
+}
+
+.hero-card {
+  animation: float-card 6s ease-in-out infinite;
+  border: 2px solid rgb(95 231 255 / 0.6);
+  box-shadow: 8px 8px 0 rgb(53 70 245 / 0.35), 0 0 40px rgb(53 70 245 / 0.2);
+}
+
+.project-card,
+.testimonial-card,
+.skills-panel {
+  animation: rise-in 700ms both;
+  border-radius: 0.25rem;
+  box-shadow: 5px 5px 0 rgb(53 70 245 / 0.25);
+}
+
+.project-card:hover,
+.testimonial-card:hover,
+.skills-panel:hover {
+  border-color: var(--color-mint);
+  box-shadow: 8px 8px 0 rgb(53 70 245 / 0.45);
+}
+
+.projects-gallery {
+  mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
+}
+
+.projects-track {
+  animation: gallery-scroll 28s linear infinite;
+}
+
+.projects-gallery:hover .projects-track,
+.projects-gallery:focus-within .projects-track {
+  animation-play-state: paused;
+}
+
+@keyframes gallery-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(calc(-50% - 0.625rem)); }
+}
+
+.project-card img,
+.hero-card img {
+  image-rendering: auto;
+}
+
+@keyframes orbit {
+  from { transform: rotate(0deg) translateX(12px) rotate(0deg); }
+  to { transform: rotate(360deg) translateX(12px) rotate(-360deg); }
+}
+
+@keyframes float-card {
+  0%, 100% { transform: translateY(0) rotate(1deg); }
+  50% { transform: translateY(-10px) rotate(-1deg); }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit,
+  .hero-card,
+  .project-card,
+  .testimonial-card,
+  .skills-panel,
+  .projects-track {
+    animation: none;
+  }
+
+  .status-dot {
+    animation: none;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
 }
 
 :focus-visible {
