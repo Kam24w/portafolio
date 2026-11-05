@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Bricolage_Grotesque, Figtree } from "next/font/google";
+import { Figtree, Pixelify_Sans, Press_Start_2P } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
-import { profile } from "@/lib/data";
+import { LanguageProvider } from "@/components/LanguageProvider";
+import { content } from "@/content/es";
 
-const bricolage = Bricolage_Grotesque({
+const pixelify = Pixelify_Sans({
   subsets: ["latin"],
-  variable: "--font-bricolage",
+  variable: "--font-pixelify",
 });
 
 const figtree = Figtree({
@@ -14,9 +15,15 @@ const figtree = Figtree({
   variable: "--font-figtree",
 });
 
+const pressStart = Press_Start_2P({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-press-start",
+});
+
 export const metadata: Metadata = {
-  title: `${profile.name} | Portafolio`,
-  description: `Portafolio de ${profile.name}: proyectos, perfil y contacto.`,
+  title: `${content.profile.name} | Portafolio`,
+  description: `Portafolio de ${content.profile.name}: proyectos, perfil y contacto.`,
 };
 
 export default function RootLayout({
@@ -25,10 +32,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${bricolage.variable} ${figtree.variable}`}>
+    <html lang="es" className={`${pixelify.variable} ${figtree.variable} ${pressStart.variable}`}>
       <body className="antialiased">
-        <Header />
-        <main>{children}</main>
+        <LanguageProvider>
+          <Header />
+          <main>{children}</main>
+        </LanguageProvider>
       </body>
     </html>
   );
