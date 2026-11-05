@@ -7,7 +7,7 @@ export default function Skills() {
   const { content } = useLanguage();
   const { skills } = content;
   return (
-    <section id="habilidades" className="scroll-mt-24 border-t border-ink/15 py-24">
+    <section id="habilidades" aria-labelledby="skills-title" className="scroll-mt-24 border-t border-ink/15 py-24">
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div>
           <SectionHeading id="skills-title" eyebrow={skills.eyebrow} title={skills.title} tone="light" />

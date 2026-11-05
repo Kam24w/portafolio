@@ -7,7 +7,7 @@ export default function Experience() {
   const { content } = useLanguage();
   const { experience } = content;
   return (
-    <section id="experiencia" className="scroll-mt-24 border-t border-ink/15 py-24">
+    <section id="experiencia" aria-labelledby="experience-title" className="scroll-mt-24 border-t border-ink/15 py-24">
       <div className="grid gap-12 md:grid-cols-[0.7fr_1.3fr]">
         <div>
           <SectionHeading id="experience-title" eyebrow={experience.eyebrow} title={experience.title} />

@@ -8,7 +8,7 @@ export default function Testimonials() {
   const { content } = useLanguage();
   const { testimonials } = content;
   return (
-    <section id="testimonios" className="scroll-mt-24 overflow-hidden border-t border-ink/15 py-24">
+    <section id="testimonios" aria-labelledby="testimonials-title" className="scroll-mt-24 overflow-hidden border-t border-ink/15 py-24">
       <div className="relative rounded-sm border border-signal/60 bg-[#020817] p-8 text-paper shadow-[8px_8px_0_rgb(53_70_245_/_0.25)] md:p-14">
         <span className="absolute -right-8 -top-16 font-display text-[18rem] leading-none text-signal/20">&ldquo;</span>
         <div className="relative grid gap-10 md:grid-cols-[0.7fr_1.3fr]">

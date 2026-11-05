@@ -7,7 +7,7 @@ export default function Contact() {
   const { content } = useLanguage();
   const { profile, contact } = content;
   return (
-    <section id="contacto" className="scroll-mt-20 py-24">
+    <section id="contacto" aria-labelledby="contact-title" className="scroll-mt-20 py-24">
       <SectionHeading id="contact-title" eyebrow={contact.eyebrow} title={contact.title} />
       <p className="mt-8 max-w-xl text-lg">{contact.description}</p>
       <a

@@ -8,7 +8,7 @@ export default function Projects() {
   const { content } = useLanguage();
   const { projects } = content;
   return (
-    <section id="proyectos" className="scroll-mt-20 py-24">
+    <section id="proyectos" aria-labelledby="projects-title" className="scroll-mt-20 py-24">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
           <SectionHeading id="projects-title" eyebrow={projects.eyebrow} title={projects.title} tone="light" />
