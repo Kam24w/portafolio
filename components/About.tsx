@@ -19,7 +19,15 @@ export default function About() {
           {skills.groups.map(({ group, items }) => (
             <div key={group} className="border-t border-ink/20 pt-4">
               <dt className="font-display text-xl font-semibold">{group}</dt>
-              <dd className="mt-1 text-ink/80">{items.map((item) => item.name).join(" · ")}</dd>
+              <dd className="mt-2">
+                <ul className="flex flex-wrap gap-2 text-sm text-ink/80">
+                  {items.map((item) => (
+                    <li key={item.name} className="rounded-full border border-ink/20 px-3 py-1">
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
             </div>
           ))}
         </dl>
