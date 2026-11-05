@@ -9,6 +9,9 @@ export default function About() {
   return (
     <section id="sobre-mi" aria-labelledby="about-title" className="scroll-mt-20 py-24">
       <SectionHeading id="about-title" eyebrow={about.eyebrow} title={about.title} />
+      <p className="mt-3 font-display text-sm uppercase tracking-[0.16em] text-signal/80">
+        {content.profile.role}
+      </p>
       <div className="mt-8 grid gap-12 md:grid-cols-2">
         <div className="space-y-4 text-lg leading-relaxed">
           {about.paragraphs.map((text) => (
