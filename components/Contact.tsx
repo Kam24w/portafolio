@@ -1,14 +1,14 @@
 "use client";
 
 import { useLanguage } from "./LanguageProvider";
+import SectionHeading from "./SectionHeading";
 
 export default function Contact() {
   const { content } = useLanguage();
   const { profile, contact } = content;
   return (
     <section id="contacto" className="scroll-mt-20 py-24">
-      <p className="text-sm font-semibold uppercase tracking-[0.2em] text-signal">{contact.eyebrow}</p>
-      <h2 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-6xl">{contact.title}</h2>
+      <SectionHeading id="contact-title" eyebrow={contact.eyebrow} title={contact.title} />
       <p className="mt-8 max-w-xl text-lg">{contact.description}</p>
       <a
         href={`mailto:${profile.email}`}

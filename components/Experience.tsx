@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage } from "./LanguageProvider";
+import SectionHeading from "./SectionHeading";
 
 export default function Experience() {
   const { content } = useLanguage();
@@ -9,8 +10,7 @@ export default function Experience() {
     <section id="experiencia" className="scroll-mt-24 border-t border-ink/15 py-24">
       <div className="grid gap-12 md:grid-cols-[0.7fr_1.3fr]">
         <div>
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-signal">{experience.eyebrow}</p>
-          <h2 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-6xl">{experience.title}</h2>
+          <SectionHeading id="experience-title" eyebrow={experience.eyebrow} title={experience.title} />
         </div>
         <ol>
           {experience.items.map((item) => (

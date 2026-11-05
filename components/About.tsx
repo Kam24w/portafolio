@@ -8,7 +8,7 @@ export default function About() {
   const { about, skills } = content;
   return (
     <section id="sobre-mi" aria-labelledby="about-title" className="scroll-mt-20 py-24">
-      <SectionHeading eyebrow={about.eyebrow} title={about.title} />
+      <SectionHeading id="about-title" eyebrow={about.eyebrow} title={about.title} />
       <div className="mt-8 grid gap-12 md:grid-cols-2">
         <div className="space-y-4 text-lg leading-relaxed">
           {about.paragraphs.map((text) => (

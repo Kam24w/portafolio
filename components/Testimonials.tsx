@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useLanguage } from "./LanguageProvider";
+import SectionHeading from "./SectionHeading";
 
 export default function Testimonials() {
   const { content } = useLanguage();
@@ -12,8 +13,7 @@ export default function Testimonials() {
         <span className="absolute -right-8 -top-16 font-display text-[18rem] leading-none text-signal/20">&ldquo;</span>
         <div className="relative grid gap-10 md:grid-cols-[0.7fr_1.3fr]">
           <div>
-            <p className="pixel-label text-[0.6rem] uppercase tracking-[0.2em] text-mint">{testimonials.eyebrow}</p>
-            <h2 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-6xl">{testimonials.title}</h2>
+            <SectionHeading id="testimonials-title" eyebrow={testimonials.eyebrow} title={testimonials.title} tone="light" />
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {testimonials.items.map((testimonial) => (

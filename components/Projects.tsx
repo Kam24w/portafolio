@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useLanguage } from "./LanguageProvider";
+import SectionHeading from "./SectionHeading";
 
 export default function Projects() {
   const { content } = useLanguage();
@@ -10,8 +11,7 @@ export default function Projects() {
     <section id="proyectos" className="scroll-mt-20 py-24">
       <div className="flex flex-col justify-between gap-5 md:flex-row md:items-end">
         <div>
-          <p className="pixel-label text-[0.6rem] uppercase tracking-[0.2em] text-mint">{projects.eyebrow}</p>
-          <h2 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-6xl">{projects.title}</h2>
+          <SectionHeading id="projects-title" eyebrow={projects.eyebrow} title={projects.title} tone="light" />
         </div>
         <p className="max-w-sm text-white/65">{projects.description}</p>
       </div>

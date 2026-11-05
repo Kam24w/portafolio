@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage } from "./LanguageProvider";
+import SectionHeading from "./SectionHeading";
 
 export default function Skills() {
   const { content } = useLanguage();
@@ -9,8 +10,7 @@ export default function Skills() {
     <section id="habilidades" className="scroll-mt-24 border-t border-ink/15 py-24">
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div>
-          <p className="pixel-label text-[0.6rem] uppercase tracking-[0.2em] text-mint">{skills.eyebrow}</p>
-          <h2 className="mt-4 font-display text-4xl font-bold tracking-tight md:text-6xl">{skills.title}</h2>
+          <SectionHeading id="skills-title" eyebrow={skills.eyebrow} title={skills.title} tone="light" />
         </div>
         <p className="max-w-sm text-white/65">{skills.description}</p>
       </div>
@@ -32,4 +32,3 @@ export default function Skills() {
     </section>
   );
 }
-
