@@ -83,6 +83,7 @@ export type PortfolioContent = {
     online: string;
     profileLabel: string;
     language: string;
+    skipToContent: string;
     menu: string;
     close: string;
     navigation: string;

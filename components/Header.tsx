@@ -37,6 +37,9 @@ export default function Header() {
 
   return (
     <header className="game-header sticky top-0 z-50 px-5 md:px-10">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-5 focus:top-5 focus:z-[60] focus:bg-signal focus:px-4 focus:py-2 focus:text-white">
+        {header.skipToContent}
+      </a>
       <div className="mx-auto max-w-7xl">
         <div className="game-header__top flex items-center justify-between py-2 text-[0.55rem] text-white/45">
           <span className="pixel-label">FC // PORTFOLIO_OS v1.0</span>

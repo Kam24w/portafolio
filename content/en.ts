@@ -20,5 +20,5 @@ export const content: PortfolioContent = {
   contact: { eyebrow: "08 · Let's talk", title: "Do you have an idea?", description: "Tell me what you have in mind and let's build something that works." },
   skills: { ...spanish.skills, eyebrow: "07 · Additional section", title: "My toolbox.", description: "Technologies and tools I use to turn concepts into digital products.", groups: [{ ...spanish.skills.groups[0] }, { ...spanish.skills.groups[1] }, { ...spanish.skills.groups[2], group: "Tools" }] },
   footer: "Built with Next.js · TypeScript · Tailwind CSS",
-  header: { online: "SYSTEM ONLINE", profileLabel: "PLAYER PROFILE", language: "Language", menu: "Menu", close: "Close", navigation: "Main", contact: "Let's talk ↗" },
+  header: { online: "SYSTEM ONLINE", profileLabel: "PLAYER PROFILE", language: "Language", skipToContent: "Skip to content", menu: "Menu", close: "Close", navigation: "Main", contact: "Let's talk ↗" },
 };

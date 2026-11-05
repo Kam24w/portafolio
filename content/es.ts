@@ -110,5 +110,5 @@ export const content: PortfolioContent = {
     ],
   },
   footer: "Hecho con Next.js · TypeScript · Tailwind CSS",
-  header: { online: "SISTEMA EN LÍNEA", profileLabel: "PERFIL DEL JUGADOR", language: "Idioma", menu: "Menú", close: "Cerrar", navigation: "Principal", contact: "Hablemos ↗" },
+  header: { online: "SISTEMA EN LÍNEA", profileLabel: "PERFIL DEL JUGADOR", language: "Idioma", skipToContent: "Saltar al contenido", menu: "Menú", close: "Cerrar", navigation: "Principal", contact: "Hablemos ↗" },
 };

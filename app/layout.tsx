@@ -36,7 +36,7 @@ export default function RootLayout({
       <body className="antialiased">
         <LanguageProvider>
           <Header />
-          <main>{children}</main>
+          <main id="main-content" tabIndex={-1}>{children}</main>
         </LanguageProvider>
       </body>
     </html>
