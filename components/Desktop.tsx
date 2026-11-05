@@ -1,23 +1,15 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Icon } from '@/components/Icon';
 import { APPS, type AppId } from '@/components/apps';
-
-type WinState = {
-  x: number;
-  y: number;
-  z: number;
-  min: boolean;
-  max: boolean;
-};
-
-type Wins = Partial<Record<AppId, WinState>>;
-
-const DOW = ['D', 'L', 'M', 'X', 'J', 'V', 'S'];
+import { CalendarWidget } from './desktop/CalendarWidget';
+import { DesktopWindow } from './desktop/DesktopWindow';
+import type { WindowMap } from './desktop/types';
 
 export default function Desktop() {
-  const [wins, setWins] = useState<Wins>({});
+  const [wins, setWins] = useState<WindowMap>({});
   const [focused, setFocused] = useState<AppId | null>(null);
   const [navOpen, setNavOpen] = useState(false);
   const [dark, setDark] = useState(false);
@@ -187,29 +179,6 @@ export default function Desktop() {
     bar.addEventListener('pointercancel', up);
   };
 
-  /* ---------- calendario ---------- */
-  const calCells = (() => {
-    if (!now) return null;
-    const y = now.getFullYear();
-    const m = now.getMonth();
-    const first = new Date(y, m, 1).getDay();
-    const days = new Date(y, m + 1, 0).getDate();
-    const today = now.getDate();
-    const cells: React.ReactNode[] = DOW.map((d) => (
-      <span key={'dow' + d} className="dow">
-        {d}
-      </span>
-    ));
-    for (let i = 0; i < first; i++) cells.push(<span key={'e' + i} />);
-    for (let i = 1; i <= days; i++)
-      cells.push(
-        <span key={i} className={'day' + (i === today ? ' today' : '')}>
-          {i}
-        </span>,
-      );
-    return cells;
-  })();
-
   const timeStr = now
     ? now.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
     : '--:--';
@@ -227,7 +196,17 @@ export default function Desktop() {
     <>
       {/* ---------- boot ---------- */}
       {!bootGone && (
-        <div id="boot" className={booted ? 'off' : ''} onClick={skipBoot}>
+        <div
+          id="boot"
+          className={booted ? 'off' : ''}
+          role="button"
+          tabIndex={0}
+          aria-label="Omitir carga del portafolio"
+          onClick={skipBoot}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') skipBoot();
+          }}
+        >
           <div className="boot-card">
             <div className="boot-avatar">fc</div>
             <div className="boot-title">sistema portafolio</div>
@@ -244,7 +223,7 @@ export default function Desktop() {
       {/* ---------- escritorio ---------- */}
       <div id="screen" ref={screenRef}>
         <div id="workspace">
-          <aside id="sidebar" className={navOpen ? 'open' : ''}>
+          <aside id="sidebar" className={navOpen ? 'open' : ''} aria-label="Navegación principal">
             <button
               className="slogo"
               title="inicio"
@@ -263,6 +242,8 @@ export default function Desktop() {
                   <button
                     key={a.id}
                     className={'sib' + (on ? ' on' : '')}
+                    aria-label={a.name}
+                    aria-current={on ? 'true' : undefined}
                     onClick={() => (w ? focusWin(a.id) : openApp(a.id))}
                   >
                     <Icon name={a.icon} />
@@ -277,7 +258,7 @@ export default function Desktop() {
             </button>
           </aside>
 
-          <main id="stage" ref={stageRef}>
+          <main id="stage" ref={stageRef} aria-label="Escritorio del portafolio">
             {/* widgets */}
             <div className="gw" id="w-clock">
               <div className="wc-time">{timeStr}</div>
@@ -287,19 +268,17 @@ export default function Desktop() {
               </div>
             </div>
 
-            <div className="gw" id="w-calendar">
-              <div className="cal-head">
-                <span className="cal-month">
-                  {now?.toLocaleDateString('es-CO', { month: 'long' }) ?? ''}
-                </span>
-                <span className="cal-year">{now?.getFullYear() ?? ''}</span>
-              </div>
-              <div className="cal-grid">{calCells}</div>
-            </div>
+            <CalendarWidget date={now} />
 
             <div id="w-me">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="me-cut" src="/assets/foto.png" alt="frayder camilo lopez" />
+              <Image
+                className="me-cut"
+                src="/assets/foto.png"
+                alt="Frayder Camilo Lopez"
+                width={512}
+                height={640}
+                priority
+              />
               <div className="me-badge">
                 <div className="me-badge-name">frayder camilo lopez</div>
                 <div className="me-badge-role">full stack developer en formación</div>
@@ -318,14 +297,10 @@ export default function Desktop() {
                 momentos del proceso
               </div>
               <div className="gal-grid">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/thumb1.jpg" alt="proyecto 1" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/thumb2.jpg" alt="proyecto 2" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/thumb3.jpg" alt="proyecto 3" />
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/assets/thumb4.jpg" alt="proyecto 4" />
+                <Image src="/assets/thumb1.jpg" alt="Vista previa del proyecto 1" width={100} height={100} />
+                <Image src="/assets/thumb2.jpg" alt="Vista previa del proyecto 2" width={100} height={100} />
+                <Image src="/assets/thumb3.jpg" alt="Vista previa del proyecto 3" width={100} height={100} />
+                <Image src="/assets/thumb4.jpg" alt="Vista previa del proyecto 4" width={100} height={100} />
               </div>
               <div className="gal-foot">reemplaza estas imágenes por capturas de tus proyectos</div>
             </div>
@@ -340,28 +315,16 @@ export default function Desktop() {
               const w = wins[a.id];
               if (!w) return null;
               return (
-                <section
+                <DesktopWindow
                   key={a.id}
-                  className={'win in' + (w.min ? ' min' : '') + (w.max ? ' max' : '')}
-                  style={{ left: w.x, top: w.y, zIndex: w.z }}
-                  onPointerDown={() => focusWin(a.id)}
-                >
-                  <div className="wbar" onPointerDown={(e) => onBarDown(e, a.id)} onDoubleClick={() => toggleMax(a.id)}>
-                    <div className="wctl">
-                      <button className="wbtn b-cl" title="cerrar" onClick={() => closeApp(a.id)}>
-                        ×
-                      </button>
-                      <button className="wbtn b-mn" title="minimizar" onClick={() => minApp(a.id)}>
-                        –
-                      </button>
-                      <button className="wbtn b-mx" title="maximizar" onClick={() => toggleMax(a.id)}>
-                        +
-                      </button>
-                    </div>
-                    <div className="wtitle">{a.name}</div>
-                  </div>
-                  <div className="wbody">{a.content}</div>
-                </section>
+                  app={a}
+                  state={w}
+                  onFocus={focusWin}
+                  onClose={closeApp}
+                  onMinimize={minApp}
+                  onToggleMaximize={toggleMax}
+                  onBarPointerDown={onBarDown}
+                />
               );
             })}
           </main>
@@ -378,6 +341,8 @@ export default function Desktop() {
                   key={a.id}
                   className={'tb-app' + (on ? ' on' : '')}
                   title={a.name}
+                  aria-label={a.name}
+                  aria-pressed={on}
                   onClick={() => {
                     if (!w) openApp(a.id);
                     else if (focused === a.id && !w.min) minApp(a.id);
