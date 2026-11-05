@@ -33,6 +33,7 @@ export const content: PortfolioContent = {
   about: {
     eyebrow: "03 · La persona detrás del código",
     title: "Sobre mí",
+    skillsLabel: "Tecnologías y herramientas",
     paragraphs: [
       "Soy Frayder Camilo Lopez, estudiante y desarrollador web en formación. Me interesa transformar ideas en interfaces sencillas, ordenadas y agradables de usar.",
       "Disfruto aprender nuevas herramientas, resolver problemas con código y construir proyectos que me permitan crecer tanto en lo técnico como en lo visual.",

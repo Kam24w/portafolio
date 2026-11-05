@@ -23,6 +23,7 @@ export type PortfolioContent = {
   about: {
     eyebrow: string;
     title: string;
+    skillsLabel: string;
     paragraphs: string[];
   };
   projects: {
