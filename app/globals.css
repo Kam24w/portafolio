@@ -49,21 +49,13 @@ body {
 }
 
 .game-header {
-  position: relative;
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
   border-bottom: 1px solid rgb(95 231 255 / 0.18);
-  background:
-    linear-gradient(90deg, rgba(2, 8, 23, 0.76), rgba(2, 8, 23, 0.52) 35%, rgba(2, 8, 23, 0.7)),
-    url("/Banner%20para%20Linkedin%20programador%20con%20fotografia%20azul%20y%20blanco.png") center/cover no-repeat;
-  box-shadow: 0 8px 30px rgb(2 8 23 / 0.3);
+  background: #020817;
+  box-shadow: 0 8px 30px rgb(2 8 23 / 0.45);
   backdrop-filter: blur(18px);
-}
-
-.game-header::before {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(35, 101, 255, 0.12), transparent 35%, transparent 65%, rgba(55, 211, 255, 0.08));
-  content: "";
-  pointer-events: none;
 }
 
 .game-header__top {
