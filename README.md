@@ -1,85 +1,64 @@
 # Portafolio de Frayder Camilo Lopez
 
-Portafolio personal construido con **Next.js (App Router)**, **TypeScript** y **Tailwind CSS**.
+Portafolio interactivo con forma de **sistema operativo**. En lugar de hacer scroll, el visitante explora un escritorio: abre "apps" desde el menú lateral o la barra de tareas, y cada sección (inicio, sobre mí, proyectos, IAs, stack, testimonios, trayectoria, contacto) aparece como una ventana que se puede arrastrar, minimizar y maximizar.
 
-## Estructura del portafolio
-
-La página sigue la estructura explicada en la guía del curso:
-
-1. Navegación fija con menú responsive.
-2. Hero de bienvenida con presentación y acceso a la experiencia/CV.
-3. Acerca de mí.
-4. Proyectos con enlaces a GitHub y demo.
-5. Testimonios.
-6. Experiencia académica y laboral.
-7. Contacto.
-8. Sección adicional de habilidades.
-9. Pie de página.
+Construido con **Next.js 16 (App Router)**, **React 19**, **TypeScript** y **Tailwind CSS 4**. Disponible en **español e inglés**.
 
 ## Concepto de diseño
 
-El **header organiza toda la página**. Al abrirla, el nombre ocupa casi toda la pantalla como un título de afiche. Al hacer scroll, ese mismo nombre se compacta en una barra fija con la navegación, y el menú marca con una píldora la sección que se está viendo. Es la única animación del sitio; el resto es sobrio a propósito.
-
-- **Colores:** gris azulado claro, azul marino (texto), azul eléctrico (acento) y menta suave (hover).
-- **Tipografías:** Bricolage Grotesque (títulos) y Figtree (texto), cargadas con `next/font`.
-- **Proyectos:** se muestran como filas con año, descripción y tecnologías, no como tarjetas.
-- **Accesibilidad:** foco visible, navegación semántica (`nav`, `aria-current`) y respeto a `prefers-reduced-motion`.
+- **Arranque:** pantalla de carga breve ("sistema portafolio") que se puede omitir con clic o Enter.
+- **Escritorio de vidrio:** menú lateral, barra de tareas y widgets (reloj, calendario, galería) con efecto de vidrio esmerilado sobre un fondo de pantalla.
+- **Personaje central:** mi foto recortada flota en el centro con una etiqueta de nombre y tecnologías.
+- **Ventanas:** se arrastran por la barra de título, doble clic para maximizar, `Esc` para cerrar.
+- **Detalle de proyecto:** cada proyecto (desde la ventana de proyectos o la galería) se abre en su propia ventana con captura grande, problema, rol, aprendizajes, stack y enlaces.
+- **Enlaces compartibles:** la URL refleja la ventana enfocada (`?app=contacto`, `?app=proyectos&id=nexora`) y al abrir ese enlace se abre esa ventana. El detalle tiene un botón "copiar enlace".
+- **Open Graph:** `app/opengraph-image.tsx` genera la imagen de previsualización (1200×630) a partir del banner. En producción define `NEXT_PUBLIC_SITE_URL` con tu dominio (en Vercel se detecta solo).
+- **Tema claro/oscuro e idioma ES/EN:** se guardan en el navegador y se aplican antes de cargar la página (sin parpadeo). La primera vez, el idioma se elige según el navegador.
+- **Colores:** acento índigo `#5451d6`, tokens en `app/globals.css`.
+- **Tipografías:** Space Grotesk (títulos) e Inter (texto), con `next/font`.
+- **Accesibilidad:** foco visible, etiquetas `aria` traducidas y respeto a `prefers-reduced-motion`.
 
 ## Cómo ejecutarlo
 
-Requiere Node.js 20 o superior y conexión a internet (para descargar las fuentes de Google).
+Requiere Node.js 20 o superior.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abre http://localhost:3000.
+Abre http://localhost:3000. Otros comandos: `npm run build`, `npm start`, `npm run lint`.
 
-Otros comandos: `npm run build` (compilar), `npm start` (servir la compilación), `npm run lint` (revisar el código).
-
-## Estructura técnica
+## Estructura
 
 ```
 app/
-  layout.tsx        Layout raíz: fuentes, metadatos y Header
-  page.tsx          Une las secciones
-  globals.css       Tailwind y tokens de diseño (colores y fuentes)
+  layout.tsx            Fuentes, metadatos, script de preferencias y LocaleProvider
+  page.tsx              Renderiza el escritorio
+  globals.css           Tailwind: tokens del tema, animaciones y utilidades (glass, scrollbar-glass)
 components/
-  Header.tsx        Navegación fija y menú móvil
-  Hero.tsx          Bienvenida y llamadas a la acción
-  About.tsx         Presentación personal
-  Projects.tsx      Proyectos con GitHub y demo
-  Testimonials.tsx  Testimonios
-  Experience.tsx    Experiencia académica y laboral
-  Contact.tsx       Correo y redes
-  Skills.tsx        Sección adicional de habilidades
-  Footer.tsx        Pie de página
-lib/
-  data.ts           Compatibilidad con el contenido en español
-content/
-  es.ts             Contenido editable en español
-  en.ts             Contenido editable en inglés
-  types.ts          Tipos compartidos del contenido
-components/
-  LanguageProvider.tsx  Estado global del idioma y persistencia local
+  desktop/              El "sistema operativo"
+    Desktop.tsx         Coordina menú, ventanas, widgets y barra de tareas
+    useWindowManager.ts Estado de las ventanas (useReducer tipado)
+    DesktopWindow.tsx   Ventana arrastrable
+    Sidebar.tsx / Taskbar.tsx / BootScreen.tsx / widgets.tsx / PreferenceToggles.tsx
+  apps/                 Contenido de cada ventana (HomeApp, ProjectsApp, …)
+    registry.ts         Lista de apps: id, ícono y tamaño
+  ui/                   Piezas reutilizables (Icon, TechChips, Stat, tonos de color)
+data/
+  portfolio.ts          Datos que no dependen del idioma: enlaces, imágenes, años, tecnologías
+i18n/
+  es.ts / en.ts         Todos los textos traducidos
+  types.ts              Tipo Dictionary: obliga a que ambos idiomas tengan las mismas claves
+  LocaleProvider.tsx    Contexto del idioma (useLocale)
+lib/                    Preferencias (tema/idioma) y utilidades
+hooks/                  useNow (reloj)
 ```
 
 ## Cómo personalizarlo
 
-El contenido se edita en **`content/es.ts`** y **`content/en.ts`**: nombre, rol, correo, redes, proyectos, texto "Sobre mí", habilidades y textos de interfaz. El selector `ES / EN` del encabezado guarda la preferencia del visitante en el navegador. Los colores se cambian en `app/globals.css`.
-
-## Subirlo a GitHub
-
-```bash
-git remote add origin https://github.com/TU-USUARIO/portafolio.git
-git push -u origin main
-```
-
-Después se puede publicar gratis importando el repositorio en [Vercel](https://vercel.com).
-
-## Preguntas para la retroalimentación
-
-1. ¿El header que se compacta comunica bien la estructura de la página?
-2. ¿Qué proyectos o contenido debería destacar más?
-3. ¿Qué mejorarías en el diseño o la accesibilidad?
+- **Agregar un proyecto:** añádelo a `PROJECT_LIST` en `data/portfolio.ts` (con las dimensiones reales de su imagen y `demo` si tiene) y escribe sus textos en `i18n/es.ts` e `i18n/en.ts`. Si falta en algún idioma, TypeScript marca error. Su ventana de detalle y su enlace `?app=proyectos&id=…` se crean solos.
+- **Cambiar textos:** `i18n/es.ts` y `i18n/en.ts`.
+- **Agregar una tecnología:** añádela a `TECH` en `data/portfolio.ts`; los ids de tecnología están tipados, así que un error de tipeo no compila.
+- **Agregar una app/ventana:** regístrala en `components/apps/registry.ts`, crea su componente y agrégalo a `APP_CONTENT` en `components/apps/index.ts`, y ponle nombre en `apps` de cada idioma.
+- **Colores:** variables de `:root` y `[data-theme="dark"]` en `app/globals.css`.
