@@ -29,14 +29,28 @@ export const es = {
   desktop: {
     label: "escritorio del portafolio",
     openToWork: "abierto a oportunidades",
-    hint: "haz clic en los iconos del menú o de la barra para abrir las ventanas · arrastra por su barra de título",
+    greeting: "¡hola, visitante!!",
+    badge: "full stack developer • disponible • 2026 • ",
+    badgeAction: "¿hablamos? abrir contacto",
+    areas: { web: "web", mobile: "móvil", games: "juegos", backend: "backend" },
   },
   window: { close: "cerrar", minimize: "minimizar", maximize: "maximizar", restore: "restaurar" },
-  profile: { role: "full stack developer en formación", photoAlt: "Frayder Camilo Lopez" },
-  gallery: {
-    title: "momentos del proceso",
-    footer: "proyectos y exploraciones de mi proceso",
-    previewOf: "vista previa de",
+  profile: { role: "full stack developer en formación", photoAlt: "Frayder Camilo Lopez", open: "abrir sobre mí" },
+  social: {
+    label: "redes y contacto",
+    github: "ver mi github",
+    linkedin: "ver mi linkedin",
+    email: "escribirme un correo",
+  },
+  gallery: { title: "mis proyectos", previewOf: "vista previa de" },
+  player: {
+    label: "sonando ahora",
+    play: "reproducir",
+    pause: "pausar",
+    previous: "proyecto anterior",
+    next: "siguiente proyecto",
+    soundOn: "activar música lofi",
+    soundOff: "silenciar música",
   },
   apps: {
     inicio: "inicio",
@@ -53,7 +67,7 @@ export const es = {
     intro:
       "desarrollador full stack en formación. convierto ideas en experiencias digitales claras, funcionales y con carácter propio. este portafolio no se baja: se explora como un escritorio.",
     stats: { projects: "proyectos", areas: "áreas", portfolio: "portafolio" },
-    note: "abre las apps desde el menú lateral o la barra de tareas. arrastra las ventanas, minimízalas y maximízalas con doble clic.",
+    note: "abre las apps desde el dock de abajo. arrastra las ventanas, minimízalas y maximízalas con doble clic.",
   },
   about: {
     title: "la persona detrás del código",

@@ -88,8 +88,8 @@ export const DesktopWindow = memo(function DesktopWindow({ windowId, state, acti
       style={
         state.maximized
           ? { zIndex: state.z }
-          : // el alto máximo descuenta la posición, para que la ventana nunca quede cortada por abajo
-            { left: state.x, top: state.y, zIndex: state.z, maxHeight: `calc(100% - ${state.y + 12}px)` }
+          : // el alto máximo descuenta la posición y el dock, para que la ventana nunca quede tapada por abajo
+            { left: state.x, top: state.y, zIndex: state.z, maxHeight: `calc(100% - ${state.y + 44}px)` }
       }
       className={cx(
         "group absolute flex-col overflow-hidden rounded-[18px] border border-glass-border bg-glass-strong shadow-glass backdrop-blur-[28px]",
@@ -98,7 +98,7 @@ export const DesktopWindow = memo(function DesktopWindow({ windowId, state, acti
         "starting:translate-y-3.5 starting:scale-92 starting:opacity-0 motion-reduce:transition-none",
         state.minimized ? "hidden" : "flex",
         state.maximized
-          ? "top-3 left-3 h-[calc(100%-24px)] w-[calc(100%-24px)]"
+          ? "top-3 left-3 h-[calc(100%-56px)] w-[calc(100%-24px)]"
           : WIDTH_CLASS[size],
       )}
     >

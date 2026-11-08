@@ -79,8 +79,7 @@ export const TECH = {
 
 export type TechId = keyof typeof TECH;
 
-/** Tecnologías destacadas junto a la foto y en la ventana de inicio. */
-export const FEATURED_TECH = ["react", "nextjs", "tailwind", "typescript"] as const satisfies readonly TechId[];
+/** Tecnologías destacadas en la ventana de inicio. */
 export const HOME_TECH = ["typescript", "react", "nextjs", "tailwind", "python", "kotlin"] as const satisfies readonly TechId[];
 
 /* ---------- proyectos ---------- */

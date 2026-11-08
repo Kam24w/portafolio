@@ -29,14 +29,28 @@ export const en = {
   desktop: {
     label: "portfolio desktop",
     openToWork: "open to opportunities",
-    hint: "click the icons in the menu or the taskbar to open windows · drag them by their title bar",
+    greeting: "hi there, visitor!!",
+    badge: "full stack developer • available • 2026 • ",
+    badgeAction: "let's talk? open contact",
+    areas: { web: "web", mobile: "mobile", games: "games", backend: "backend" },
   },
   window: { close: "close", minimize: "minimize", maximize: "maximize", restore: "restore" },
-  profile: { role: "full stack developer in training", photoAlt: "Frayder Camilo Lopez" },
-  gallery: {
-    title: "moments from the process",
-    footer: "projects and explorations from my journey",
-    previewOf: "preview of",
+  profile: { role: "full stack developer in training", photoAlt: "Frayder Camilo Lopez", open: "open about me" },
+  social: {
+    label: "social & contact",
+    github: "see my github",
+    linkedin: "see my linkedin",
+    email: "send me an email",
+  },
+  gallery: { title: "my projects", previewOf: "preview of" },
+  player: {
+    label: "now playing",
+    play: "play",
+    pause: "pause",
+    previous: "previous project",
+    next: "next project",
+    soundOn: "turn on lofi music",
+    soundOff: "mute music",
   },
   apps: {
     inicio: "home",
@@ -53,7 +67,7 @@ export const en = {
     intro:
       "full stack developer in training. i turn ideas into clear, functional digital experiences with a character of their own. this portfolio isn't scrolled: it's explored like a desktop.",
     stats: { projects: "projects", areas: "areas", portfolio: "portfolio" },
-    note: "open apps from the side menu or the taskbar. drag the windows, minimize them and maximize them with a double click.",
+    note: "open apps from the dock below. drag the windows, minimize them and maximize them with a double click.",
   },
   about: {
     title: "the person behind the code",

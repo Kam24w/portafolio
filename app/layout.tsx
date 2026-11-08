@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Doto, Instrument_Serif, Inter, Space_Grotesk } from "next/font/google";
 import { es } from "@/i18n/es";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { PREFERENCES_INIT_SCRIPT } from "@/lib/preferences-script";
@@ -9,6 +9,10 @@ import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-grotesk" });
+/** Fuente de matriz de puntos para el reloj del escritorio. */
+const doto = Doto({ subsets: ["latin"], weight: ["700", "900"], variable: "--font-doto" });
+/** Serif itálica editorial para el apellido gigante detrás de la foto. */
+const instrument = Instrument_Serif({ subsets: ["latin"], weight: "400", style: "italic", variable: "--font-instrument" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -34,7 +38,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // `lang` y `data-theme` los ajusta el script antes de hidratar; por eso se suprime la advertencia
-    <html lang="es" data-theme="light" className={`${inter.variable} ${grotesk.variable}`} suppressHydrationWarning>
+    <html lang="es" data-theme="light" className={`${inter.variable} ${grotesk.variable} ${doto.variable} ${instrument.variable}`} suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: PREFERENCES_INIT_SCRIPT }} />
         <LocaleProvider>{children}</LocaleProvider>

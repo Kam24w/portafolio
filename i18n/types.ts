@@ -33,10 +33,24 @@ export type Dictionary = {
     /** Texto visible del botón de idioma (idioma de destino). */
     switchLanguageShort: string;
   };
-  desktop: { label: string; openToWork: string; hint: string };
+  desktop: {
+    label: string;
+    openToWork: string;
+    greeting: string;
+    /** Texto que gira en el sello circular (termina en separador). */
+    badge: string;
+    /** Etiqueta accesible del sello: abre contacto. */
+    badgeAction: string;
+    /** Área de cada sticker flotante. */
+    areas: { web: string; mobile: string; games: string; backend: string };
+  };
   window: { close: string; minimize: string; maximize: string; restore: string };
-  profile: { role: string; photoAlt: string };
-  gallery: { title: string; footer: string; previewOf: string };
+  profile: { role: string; photoAlt: string; open: string };
+  /** Menú lateral de redes. */
+  social: { label: string; github: string; linkedin: string; email: string };
+  gallery: { title: string; previewOf: string };
+  /** Reproductor de proyectos (widget estilo "sonando ahora"). */
+  player: { label: string; play: string; pause: string; previous: string; next: string; soundOn: string; soundOff: string };
   apps: Record<AppId, string>;
   home: {
     title: string;

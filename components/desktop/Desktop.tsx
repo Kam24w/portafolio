@@ -1,15 +1,22 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, type CSSProperties } from "react";
 import { WINDOW_WIDTH, type AppId } from "@/components/apps/registry";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { BootScreen } from "./BootScreen";
 import { DesktopContext, type DesktopContextValue } from "./DesktopContext";
 import { DesktopWindow } from "./DesktopWindow";
+import { Dock } from "./Dock";
 import { Sidebar } from "./Sidebar";
-import { Taskbar } from "./Taskbar";
 import { useWindowManager } from "./useWindowManager";
-import { CalendarWidget, ClockWidget, DesktopHint, GalleryWidget, ProfileFigure } from "./widgets";
+import { BackdropTitle } from "./widgets/BackdropTitle";
+import { CalendarWidget } from "./widgets/CalendarWidget";
+import { HeroDecor } from "./widgets/HeroDecor";
+import { ClockWidget } from "./widgets/ClockWidget";
+import { ProfileFigure } from "./widgets/ProfileFigure";
+import { ProjectPlayer } from "./widgets/ProjectPlayer";
+import { ProjectShowcase } from "./widgets/ProjectShowcase";
+import { TopBar } from "./widgets/TopBar";
 import {
   WINDOW_IDS,
   getWindowSize,
@@ -20,36 +27,33 @@ import {
   type WindowTarget,
 } from "./windows";
 
-/** Mismo punto de corte que el prefijo `max-sm:` de Tailwind (40rem = 640px). */
-const MOBILE_QUERY = "(width < 40rem)";
 const FIRST_WINDOW_AFTER_MS = 1000;
 
-/** Posición inicial de una ventana nueva, escalonada según cuántas se han abierto. */
-function initialPosition(target: WindowTarget, openedCount: number, stageWidth: number) {
-  const width = WINDOW_WIDTH[getWindowSize(target)];
-  const maxLeft = Math.max(10, stageWidth - width);
+/**
+ * Cuánto sobresale la foto por encima del marco. El marco deja ese mismo
+ * espacio libre arriba, así la cabeza queda sobre el fondo de pantalla.
+ */
+const POP_OUT = "clamp(36px, 8vh, 84px)";
 
-  if (target.kind === "project") {
-    return { x: Math.min(260 + openedCount * 32, maxLeft), y: Math.min(28 + openedCount * 24, 100) };
-  }
-  if (target.app.id === "inicio") {
-    return { x: Math.min(150 + openedCount * 32, maxLeft), y: 112 };
-  }
-  return { x: Math.min(220 + openedCount * 32, maxLeft), y: Math.min(16 + openedCount * 28, 90) };
+/** Ventanas nuevas: centradas en el marco y escalonadas para que no se tapen del todo. */
+function initialPosition(target: WindowTarget, openedCount: number, stageWidth: number) {
+  const width = Math.min(WINDOW_WIDTH[getWindowSize(target)], stageWidth - 20);
+  const cascade = openedCount % 5;
+  const centered = (stageWidth - width) / 2 - 56 + cascade * 28;
+  return {
+    x: Math.round(Math.max(10, Math.min(centered, stageWidth - width - 10))),
+    y: 20 + cascade * 24,
+  };
 }
 
 export function Desktop() {
   const { t } = useLocale();
   const { windows, focused, actions } = useWindowManager();
-  const [navOpen, setNavOpen] = useState(false);
-  const [hintHidden, setHintHidden] = useState(false);
   const screenRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLElement>(null);
 
   const openWindow = useCallback(
     (id: WindowId) => {
-      setNavOpen(false);
-      setHintHidden(true);
       const target = getWindowTarget(id);
       actions.open(id, (openedCount) => initialPosition(target, openedCount, stageRef.current?.clientWidth ?? 900));
     },
@@ -58,22 +62,26 @@ export function Desktop() {
 
   const desktopContext = useMemo<DesktopContextValue>(() => ({ openWindow }), [openWindow]);
 
-  /* barra de tareas: abrir → enfocar → minimizar, como en un sistema operativo */
-  const toggleFromTaskbar = (id: WindowId) => {
+  /* dock: abrir → enfocar → minimizar, como en un sistema operativo */
+  const toggleFromDock = (id: WindowId) => {
     const win = windows[id];
     if (!win) openWindow(id);
     else if (focused === id && !win.minimized) actions.minimize(id);
     else actions.focus(id);
   };
 
-  /* primera ventana: la que pida la URL (?app=…&id=…) o "inicio" */
+  /*
+   * El escritorio arranca limpio (la foto es la protagonista). Solo se abre
+   * una ventana si el enlace la pide: ?app=… o ?app=proyectos&id=…
+   */
   useEffect(() => {
     const requested = windowIdFromSearch(window.location.search);
+    if (!requested) return;
     const timer = setTimeout(() => {
-      if (requested && getWindowTarget(requested).kind === "project") {
+      if (getWindowTarget(requested).kind === "project") {
         openWindow("proyectos"); // contexto detrás del detalle
       }
-      openWindow(requested ?? "inicio");
+      openWindow(requested);
     }, FIRST_WINDOW_AFTER_MS);
     return () => clearTimeout(timer);
   }, [openWindow]);
@@ -88,16 +96,14 @@ export function Desktop() {
     window.history.replaceState(null, "", `${window.location.pathname}${search}${window.location.hash}`);
   }, [focused]);
 
-  /* Esc: primero cierra el menú móvil; si no, la ventana enfocada */
+  /* Esc cierra la ventana enfocada */
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== "Escape") return;
-      if (navOpen) setNavOpen(false);
-      else if (focused) actions.close(focused);
+      if (event.key === "Escape" && focused) actions.close(focused);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [navOpen, focused, actions]);
+  }, [focused, actions]);
 
   /* inclinación 3D con el mouse (solo con puntero fino y sin "reducir movimiento") */
   useEffect(() => {
@@ -109,7 +115,7 @@ export function Desktop() {
     const onMove = (event: MouseEvent) => {
       const x = event.clientX / window.innerWidth - 0.5;
       const y = event.clientY / window.innerHeight - 0.5;
-      el.style.transform = `rotateX(${(-y * 2).toFixed(2)}deg) rotateY(${(x * 2).toFixed(2)}deg)`;
+      el.style.transform = `rotateX(${(-y * 1.5).toFixed(2)}deg) rotateY(${(x * 1.5).toFixed(2)}deg)`;
     };
     const reset = () => {
       el.style.transform = "";
@@ -122,12 +128,7 @@ export function Desktop() {
     };
   }, []);
 
-  const handleLogoClick = () => {
-    if (window.matchMedia(MOBILE_QUERY).matches) setNavOpen((open) => !open);
-    else openWindow("inicio");
-  };
-
-  /* app resaltada en el menú lateral: un detalle de proyecto cuenta como "proyectos" */
+  /* app resaltada en el dock: un detalle de proyecto cuenta como "proyectos" */
   const focusedWindow = focused ? windows[focused] : undefined;
   let activeAppId: AppId | null = null;
   if (focused && focusedWindow && !focusedWindow.minimized) {
@@ -139,29 +140,46 @@ export function Desktop() {
     <DesktopContext value={desktopContext}>
       <BootScreen />
 
-      {navOpen && (
-        <div aria-hidden="true" onClick={() => setNavOpen(false)} className="fixed inset-0 z-80 bg-[#0a0a19]/40 sm:hidden" />
-      )}
+      <div
+        ref={screenRef}
+        style={{ "--pop-out": POP_OUT } as CSSProperties}
+        className="relative z-1 h-dvh overflow-hidden transition-transform duration-300 will-change-transform perspective-[1400px]"
+      >
+        {/* marco principal: vidrio lechoso sobre el fondo de pantalla */}
+        <main
+          ref={stageRef}
+          aria-label={t.desktop.label}
+          className="absolute top-(--pop-out) right-6 bottom-11 left-14 rounded-[38px] border border-frame-border bg-frame shadow-glass backdrop-blur-xl transition-colors duration-400 max-sm:top-3 max-sm:right-2 max-sm:bottom-[84px] max-sm:left-2 max-sm:rounded-[28px]"
+        >
+          <BackdropTitle />
+          <ProfileFigure />
+          <HeroDecor />
 
-      <div ref={screenRef} className="relative z-1 flex h-dvh flex-col transition-transform duration-300 will-change-transform">
-        <div className="flex min-h-0 flex-1">
-          <Sidebar open={navOpen} activeId={activeAppId} onLogoClick={handleLogoClick} onAppClick={openWindow} />
-
-          <main ref={stageRef} aria-label={t.desktop.label} className="relative min-w-0 flex-1 overflow-hidden perspective-[1400px]">
+          {/* columna izquierda */}
+          <div className="absolute top-7 left-10 flex flex-col gap-5 max-sm:top-4 max-sm:left-5">
             <ClockWidget />
-            <CalendarWidget />
-            <ProfileFigure />
-            <GalleryWidget />
-            <DesktopHint hidden={hintHidden} />
+            <div className="max-md:hidden">
+              <CalendarWidget />
+            </div>
+          </div>
 
-            {WINDOW_IDS.map((id) => {
-              const state = windows[id];
-              return state ? <DesktopWindow key={id} windowId={id} state={state} actions={actions} /> : null;
-            })}
-          </main>
-        </div>
+          {/* columna derecha */}
+          <div className="absolute top-5 right-5 flex w-[316px] flex-col gap-5 max-sm:w-auto">
+            <TopBar />
+            <div className="flex flex-col gap-4 max-lg:hidden">
+              <ProjectShowcase />
+              <ProjectPlayer />
+            </div>
+          </div>
 
-        <Taskbar windows={windows} onWindowClick={toggleFromTaskbar} />
+          {WINDOW_IDS.map((id) => {
+            const state = windows[id];
+            return state ? <DesktopWindow key={id} windowId={id} state={state} actions={actions} /> : null;
+          })}
+        </main>
+
+        <Sidebar />
+        <Dock windows={windows} activeAppId={activeAppId} onWindowClick={toggleFromDock} />
       </div>
     </DesktopContext>
   );
