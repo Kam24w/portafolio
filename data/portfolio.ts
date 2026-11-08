@@ -43,6 +43,12 @@ export const PROFILE = {
   linkedin: { href: ExternalUrl; label: string };
 };
 
+/**
+ * Ruta del CV en PDF dentro de `public/` (ej. "/cv/frayder-camilo-lopez.pdf").
+ * Mientras sea `null`, el botón se muestra desactivado con "disponible pronto".
+ */
+export const CV_URL: string | null = null;
+
 /* ---------- tecnologías ---------- */
 
 type TechDef = {
