@@ -61,6 +61,7 @@ const PATHS = {
       <circle cx="4" cy="4" r="2" />
     </>
   ),
+  download: <path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14" />,
   pin: (
     <>
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 1 1 16 0z" />
