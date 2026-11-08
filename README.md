@@ -1,14 +1,15 @@
 # Portafolio de Frayder Camilo Lopez
 
-Portafolio interactivo con forma de **sistema operativo**. En lugar de hacer scroll, el visitante explora un escritorio: abre "apps" desde el menú lateral o la barra de tareas, y cada sección (inicio, sobre mí, proyectos, IAs, stack, testimonios, trayectoria, contacto) aparece como una ventana que se puede arrastrar, minimizar y maximizar.
+Portafolio interactivo con forma de **sistema operativo**. En lugar de hacer scroll, el visitante explora un escritorio: abre "apps" desde el dock, y cada sección (inicio, sobre mí, proyectos, IAs, stack, testimonios, trayectoria, contacto) aparece como una ventana que se puede arrastrar, minimizar y maximizar.
 
 Construido con **Next.js 16 (App Router)**, **React 19**, **TypeScript** y **Tailwind CSS 4**. Disponible en **español e inglés**.
 
 ## Concepto de diseño
 
 - **Arranque:** pantalla de carga breve ("sistema portafolio") que se puede omitir con clic o Enter.
-- **Escritorio de vidrio:** menú lateral, barra de tareas y widgets (reloj, calendario, galería) con efecto de vidrio esmerilado sobre un fondo de pantalla.
-- **Personaje central:** mi foto recortada flota en el centro con una etiqueta de nombre y tecnologías.
+- **Escritorio de vidrio:** un marco grande de vidrio lechoso sobre el fondo de pantalla, con un menú lateral de redes (GitHub, LinkedIn, correo) y un dock de apps montados sobre sus bordes.
+- **Widgets:** reloj en fuente de puntos (Doto), calendario, galería 2×2 de proyectos y un reproductor "sonando ahora" que rota entre los proyectos.
+- **Personaje central:** mi foto recortada, anclada abajo y más alta que el marco, así que la cabeza sobresale por arriba.
 - **Ventanas:** se arrastran por la barra de título, doble clic para maximizar, `Esc` para cerrar.
 - **Detalle de proyecto:** cada proyecto (desde la ventana de proyectos o la galería) se abre en su propia ventana con captura grande, problema, rol, aprendizajes, stack y enlaces.
 - **Enlaces compartibles:** la URL refleja la ventana enfocada (`?app=contacto`, `?app=proyectos&id=nexora`) y al abrir ese enlace se abre esa ventana. El detalle tiene un botón "copiar enlace".
@@ -38,10 +39,11 @@ app/
   globals.css           Tailwind: tokens del tema, animaciones y utilidades (glass, scrollbar-glass)
 components/
   desktop/              El "sistema operativo"
-    Desktop.tsx         Coordina menú, ventanas, widgets y barra de tareas
+    Desktop.tsx         Coordina el marco, menú, ventanas, widgets y dock
     useWindowManager.ts Estado de las ventanas (useReducer tipado)
     DesktopWindow.tsx   Ventana arrastrable
-    Sidebar.tsx / Taskbar.tsx / BootScreen.tsx / widgets.tsx / PreferenceToggles.tsx
+    Sidebar.tsx / Dock.tsx / BootScreen.tsx / PreferenceToggles.tsx
+    widgets/            Reloj, calendario, foto, barra superior, galería y reproductor
   apps/                 Contenido de cada ventana (HomeApp, ProjectsApp, …)
     registry.ts         Lista de apps: id, ícono y tamaño
   ui/                   Piezas reutilizables (Icon, TechChips, Stat, tonos de color)
