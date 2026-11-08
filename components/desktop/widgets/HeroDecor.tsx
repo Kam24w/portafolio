@@ -17,18 +17,23 @@ const STICKERS = [
   { tech: "python", area: "backend", position: "left-[calc(50%+215px)] top-[45%] -rotate-5", delay: "[animation-delay:-3s]" },
 ] as const satisfies readonly { tech: TechId; area: Area; position: string; delay: string }[];
 
-const BADGE_SIZE = 128;
-const BADGE_RADIUS = 50;
+/** Geometría del sello (en unidades del viewBox). */
+const BADGE = { size: 160, radius: 62 } as const;
+const GRADIENT_RING = "bg-conic from-accent via-[#22d3ee] to-[#c026d3]";
 
 /**
  * Decoración en primer plano: la firma "camilo" en serif itálica cruzando
- * la foto, stickers de tecnologías que flotan y un sello circular con texto
- * girando que abre la ventana de contacto.
+ * la foto, stickers de tecnologías que flotan y un sello circular que abre
+ * la ventana de contacto.
  */
 export function HeroDecor() {
   const { t, locale } = useLocale();
   const { openWindow } = useDesktop();
   const secondName = PROFILE.name.split(" ")[1];
+  // "full stack developer • disponible • 2026 • " → frases separadas por estrellas de color
+  const badgePhrases = t.desktop.badge.split("•").map((phrase) => phrase.trim()).filter(Boolean);
+  const { size, radius } = BADGE;
+  const center = size / 2;
 
   return (
     <>
@@ -69,37 +74,55 @@ export function HeroDecor() {
         );
       })}
 
-      {/* sello circular: el texto gira alrededor de una flecha */}
+      {/* sello circular: anillo degradado, texto girando y botón central que abre contacto */}
       <button
         type="button"
         onClick={() => openWindow("contacto")}
         aria-label={t.desktop.badgeAction}
         title={t.desktop.badgeAction}
-        className="group absolute top-[66%] left-[calc(50%+150px)] z-[5] size-32 rounded-full transition duration-300 hover:scale-110 max-lg:hidden"
+        className="group absolute top-[62%] left-[calc(50%+150px)] z-[5] size-40 rounded-full transition duration-300 hover:scale-105 max-lg:hidden"
       >
+        {/* resplandor */}
+        <span aria-hidden="true" className={cx(GRADIENT_RING, "absolute -inset-2 rounded-full opacity-40 blur-xl motion-safe:animate-spin motion-safe:[animation-duration:12s]")} />
+        {/* anillo de color + disco de vidrio oscuro */}
+        <span aria-hidden="true" className={cx(GRADIENT_RING, "absolute inset-0 rounded-full p-[2px]")}>
+          <span className="block size-full rounded-full bg-[#0f0f1a]/92 backdrop-blur-md" />
+        </span>
+        {/* anillo interior punteado */}
+        <span aria-hidden="true" className="absolute inset-[30px] rounded-full border border-dashed border-white/25" />
+
+        {/* texto girando */}
         <svg
-          viewBox={`0 0 ${BADGE_SIZE} ${BADGE_SIZE}`}
+          viewBox={`0 0 ${size} ${size}`}
           aria-hidden="true"
-          className="absolute inset-0 size-full motion-safe:animate-spin motion-safe:[animation-duration:16s]"
+          className="absolute inset-0 size-full motion-safe:animate-spin motion-safe:[animation-duration:18s]"
         >
           <defs>
             <path
               id="badge-circle"
-              d={`M ${BADGE_SIZE / 2}, ${BADGE_SIZE / 2} m -${BADGE_RADIUS}, 0 a ${BADGE_RADIUS},${BADGE_RADIUS} 0 1,1 ${BADGE_RADIUS * 2},0 a ${BADGE_RADIUS},${BADGE_RADIUS} 0 1,1 -${BADGE_RADIUS * 2},0`}
+              d={`M ${center},${center} m -${radius},0 a ${radius},${radius} 0 1,1 ${radius * 2},0 a ${radius},${radius} 0 1,1 -${radius * 2},0`}
             />
           </defs>
-          <circle cx={BADGE_SIZE / 2} cy={BADGE_SIZE / 2} r={BADGE_SIZE / 2 - 1} className="fill-[#111118]/85 dark:fill-white/90" />
-          <text className="fill-white font-display text-[11.5px] font-semibold tracking-[.2em] uppercase dark:fill-[#111118]">
-            <textPath href="#badge-circle" textLength={2 * Math.PI * BADGE_RADIUS - 4}>
-              {t.desktop.badge}
+          <text className="fill-white font-display text-[11px] font-semibold tracking-[.18em] uppercase">
+            <textPath href="#badge-circle" textLength={2 * Math.PI * radius - 2} lengthAdjust="spacing">
+              {badgePhrases.map((phrase) => (
+                <tspan key={phrase}>
+                  {phrase}
+                  <tspan className="fill-[#c4b5fd]"> ✦ </tspan>
+                </tspan>
+              ))}
             </textPath>
           </text>
         </svg>
-        <span
-          aria-hidden="true"
-          className="absolute inset-0 m-auto flex size-12 items-center justify-center rounded-full bg-linear-135 from-accent to-[#c026d3] text-xl text-white transition duration-300 group-hover:rotate-45"
-        >
-          ↗
+
+        {/* botón central */}
+        <span aria-hidden="true" className="absolute inset-0 m-auto size-[62px]">
+          <span className="absolute inset-0 rounded-full border-2 border-accent/60 motion-safe:animate-ping motion-safe:[animation-duration:2.6s]" />
+          <span className="relative flex size-full items-center justify-center rounded-full bg-linear-135 from-accent to-[#c026d3] text-white shadow-[0_0_28px_rgba(156,120,247,.6),inset_0_1px_0_rgba(255,255,255,.35)]">
+            <svg viewBox="0 0 24 24" className="size-6 transition duration-300 group-hover:rotate-45" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
+              <path d="M7 17 17 7M8 7h9v9" />
+            </svg>
+          </span>
         </span>
       </button>
     </>
