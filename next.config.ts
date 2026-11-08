@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
   // (ej. http://192.168.x.x:3000). Sin esto el JS no carga y la pantalla de arranque se congela.
   allowedDevOrigins: ["192.168.*.*", "10.*.*.*"],
   images: {
-    // 95 lo usa la foto central; 75 es el valor por defecto
-    qualities: [75, 95],
+    // 100 lo usa la foto central (máxima calidad); 75 es el valor por defecto
+    qualities: [75, 100],
   },
   // Tailwind se procesa con PostCSS (postcss.config.mjs), la integración oficial.
   // La regla anterior de Turbopack (@tailwindcss/turbopack) no recargaba globals.css en desarrollo.
