@@ -46,6 +46,8 @@ export type Dictionary = {
   };
   window: { close: string; minimize: string; maximize: string; restore: string };
   profile: { role: string; photoAlt: string; open: string };
+  /** Botón de descarga del CV. */
+  cv: { download: string; short: string; soon: string };
   /** Menú lateral de redes. */
   social: { label: string; github: string; linkedin: string; email: string };
   gallery: { title: string; previewOf: string };

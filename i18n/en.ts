@@ -36,6 +36,7 @@ export const en = {
   },
   window: { close: "close", minimize: "minimize", maximize: "maximize", restore: "restore" },
   profile: { role: "full stack developer in training", photoAlt: "Frayder Camilo Lopez", open: "open about me" },
+  cv: { download: "download resume", short: "cv", soon: "resume coming soon" },
   social: {
     label: "social & contact",
     github: "see my github",
