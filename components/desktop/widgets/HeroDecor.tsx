@@ -11,10 +11,10 @@ type Area = keyof Dictionary["desktop"]["areas"];
 
 /** Stickers alrededor de la foto: una tecnología por área, cada uno con su posición, giro y ritmo. */
 const STICKERS = [
-  { tech: "react", area: "web", position: "left-[calc(50%-330px)] top-[36%] -rotate-8", delay: "[animation-delay:0s]" },
-  { tech: "unity", area: "games", position: "left-[calc(50%-310px)] top-[72%] rotate-6", delay: "[animation-delay:-2s]" },
-  { tech: "kotlin", area: "mobile", position: "left-[calc(50%+170px)] top-[31%] rotate-7", delay: "[animation-delay:-1s]" },
-  { tech: "python", area: "backend", position: "left-[calc(50%+200px)] top-[47%] -rotate-5", delay: "[animation-delay:-3s]" },
+  { tech: "react", area: "web", position: "left-[calc(50%-410px)] top-[34%] -rotate-8", delay: "[animation-delay:0s]" },
+  { tech: "unity", area: "games", position: "left-[calc(50%-390px)] top-[70%] rotate-6", delay: "[animation-delay:-2s]" },
+  { tech: "kotlin", area: "mobile", position: "left-[calc(50%+175px)] top-[28%] rotate-7", delay: "[animation-delay:-1s]" },
+  { tech: "python", area: "backend", position: "left-[calc(50%+215px)] top-[45%] -rotate-5", delay: "[animation-delay:-3s]" },
 ] as const satisfies readonly { tech: TechId; area: Area; position: string; delay: string }[];
 
 const BADGE_SIZE = 128;
@@ -47,21 +47,21 @@ export function HeroDecor() {
             key={sticker.tech}
             aria-hidden="true"
             className={cx(
-              "pointer-events-none absolute z-[5] flex items-center gap-2 rounded-2xl border border-white/70 bg-white/90 py-1.5 pr-3.5 pl-1.5 shadow-[0_14px_28px_-12px_rgba(0,0,0,.45)] max-lg:hidden dark:border-white/10 dark:bg-[#1b1b2a]/90",
+              "pointer-events-none absolute z-[5] flex items-center gap-3 rounded-[20px] border border-white/70 bg-white/92 py-2 pr-5 pl-2 shadow-[0_18px_34px_-14px_rgba(0,0,0,.5)] backdrop-blur-md max-lg:hidden dark:border-white/12 dark:bg-[#1b1b2a]/90",
               "motion-safe:animate-float",
               sticker.position,
               sticker.delay,
             )}
           >
             <span
-              className="flex size-8 items-center justify-center rounded-xl font-display text-[11px] font-bold text-white"
+              className="flex size-11 items-center justify-center rounded-[14px] font-display text-sm font-bold text-white shadow-[inset_0_1px_0_rgba(255,255,255,.35)]"
               style={{ background: `linear-gradient(135deg, ${tech.colors[0]}, ${tech.colors[1]})` }}
             >
               {tech.mark}
             </span>
             <span className="leading-tight">
-              <span className="block text-[13px] font-semibold text-[#1c1c22] dark:text-white">{localize(tech.label, locale)}</span>
-              <span className="block text-[10px] font-medium tracking-wider text-[#6b6b78] uppercase dark:text-white/55">
+              <span className="block text-base font-semibold text-[#1c1c22] dark:text-white">{localize(tech.label, locale)}</span>
+              <span className="block text-[11px] font-semibold tracking-[.14em] text-[#6b6b78] uppercase dark:text-white/55">
                 {t.desktop.areas[sticker.area]}
               </span>
             </span>
