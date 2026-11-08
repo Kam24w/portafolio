@@ -10,14 +10,8 @@ const nextConfig: NextConfig = {
     // 95 lo usa la foto central; 75 es el valor por defecto
     qualities: [75, 95],
   },
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
+  // Tailwind se procesa con PostCSS (postcss.config.mjs), la integración oficial.
+  // La regla anterior de Turbopack (@tailwindcss/turbopack) no recargaba globals.css en desarrollo.
 };
 
 export default nextConfig;
