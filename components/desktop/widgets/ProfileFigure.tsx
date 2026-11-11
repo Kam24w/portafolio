@@ -37,7 +37,7 @@ export function ProfileFigure() {
       {/* halo de luz detrás de la figura: la separa del fondo */}
       <div
         aria-hidden="true"
-        className="absolute top-[12%] left-1/2 h-[70%] w-[130%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--accent-soft),transparent)] opacity-90 blur-2xl dark:bg-[radial-gradient(closest-side,rgba(156,154,247,.28),transparent)]"
+        className="absolute top-[12%] left-1/2 h-[70%] w-[130%] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,var(--accent-soft),transparent)] opacity-90 blur-2xl dark:bg-[radial-gradient(closest-side,rgba(96,165,250,.26),transparent)]"
       />
 
       <Image
@@ -48,7 +48,7 @@ export function ProfileFigure() {
         quality={100}
         priority
         sizes="(max-width: 640px) 60vw, 40vw"
-        className="relative h-full w-auto max-w-none object-contain object-bottom will-change-transform [filter:url(#photo-sharpen)_contrast(1.07)_saturate(1.12)_brightness(1.03)_drop-shadow(0_0_1px_rgba(255,255,255,.55))_drop-shadow(0_24px_36px_rgba(8,8,30,.5))_drop-shadow(0_0_44px_rgba(124,120,240,.28))]"
+        className="relative h-full w-auto max-w-none object-contain object-bottom will-change-transform [filter:url(#photo-sharpen)_contrast(1.07)_saturate(1.12)_brightness(1.03)_drop-shadow(0_0_1px_rgba(255,255,255,.55))_drop-shadow(0_24px_36px_rgba(8,8,30,.5))_drop-shadow(0_0_44px_rgba(56,140,250,.26))]"
       />
     </div>
   );

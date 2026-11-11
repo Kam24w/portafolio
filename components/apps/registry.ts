@@ -15,14 +15,14 @@ export const WINDOW_WIDTH = {
  * Los nombres visibles se traducen en `i18n/` (clave `apps`).
  */
 export const APPS = [
-  { id: "inicio", icon: "home", size: "wide", tone: "violet" },
-  { id: "sobre-mi", icon: "user", size: "default", tone: "sunset" },
-  { id: "proyectos", icon: "code", size: "default", tone: "ocean" },
-  { id: "ias", icon: "spark", size: "default", tone: "mint" },
-  { id: "plugins", icon: "puzzle", size: "default", tone: "figma" },
+  { id: "inicio", icon: "home", size: "wide", tone: "blue" },
+  { id: "sobre-mi", icon: "user", size: "default", tone: "navy" },
+  { id: "proyectos", icon: "code", size: "default", tone: "cyan" },
+  { id: "ias", icon: "spark", size: "default", tone: "emerald" },
+  { id: "plugins", icon: "puzzle", size: "default", tone: "slate" },
   { id: "testimonios", icon: "quote", size: "default", tone: "clay" },
   { id: "trayectoria", icon: "route", size: "default", tone: "teal" },
-  { id: "contacto", icon: "mail", size: "default", tone: "indigo" },
+  { id: "contacto", icon: "mail", size: "default", tone: "sky" },
 ] as const satisfies readonly { id: string; icon: IconName; size: WindowSize; tone: Tone }[];
 
 export type AppDef = (typeof APPS)[number];

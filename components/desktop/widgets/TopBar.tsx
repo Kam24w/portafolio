@@ -12,7 +12,7 @@ const circleClass =
   "glass flex size-10 shrink-0 items-center justify-center rounded-full text-fg transition duration-150 hover:scale-105 hover:text-accent";
 
 const cvClass =
-  "flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-linear-135 from-accent to-[#c026d3] px-3.5 text-sm font-bold text-white uppercase shadow-[0_8px_20px_-8px_var(--accent)] transition duration-150";
+  "flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-linear-135 from-accent to-[#0ea5c6] px-3.5 text-sm font-bold text-white uppercase shadow-[0_8px_20px_-8px_var(--accent)] transition duration-150";
 
 /** Botón de CV: descarga el PDF del idioma activo; si no hay, queda visible pero inactivo ("disponible pronto"). */
 function CvButton() {
@@ -59,7 +59,7 @@ export function TopBar() {
         className="glass flex items-center gap-2.5 rounded-full py-1 pr-1 pl-4 text-sm font-semibold text-fg transition duration-150 hover:scale-[1.03] max-sm:hidden"
       >
         {firstName}
-        <span className="relative size-8 overflow-hidden rounded-full bg-linear-160 from-[#c7d2fe] to-accent">
+        <span className="relative size-8 overflow-hidden rounded-full bg-linear-160 from-[#dbeafe] to-accent">
           <Image src={PROFILE.photo} alt="" width={64} height={135} className="absolute top-0.5 left-1/2 w-[90%] max-w-none -translate-x-1/2" />
         </span>
       </button>

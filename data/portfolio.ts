@@ -9,16 +9,16 @@ export type ExternalUrl = `https://${string}`;
 
 /** Degradados disponibles; cada uno se traduce a clases de Tailwind en `components/ui/tones.ts`. */
 export type Tone =
-  | "indigo"
+  | "blue"
+  | "navy"
   | "sky"
-  | "sunset"
+  | "cyan"
   | "teal"
-  | "mint"
-  | "violet"
-  | "clay"
-  | "ocean"
+  | "emerald"
   | "forest"
-  | "figma";
+  | "amber"
+  | "clay"
+  | "slate";
 
 /* ---------- perfil ---------- */
 
@@ -65,7 +65,7 @@ type TechDef = {
 
 export const TECH = {
   react: { label: "react", mark: "Re", colors: ["#61dafb", "#0ea5e9"] },
-  nextjs: { label: "next.js", mark: "Nx", colors: ["#8888ff", "#6366f1"] },
+  nextjs: { label: "next.js", mark: "Nx", colors: ["#0f172a", "#475569"] },
   tailwind: { label: "tailwind css", mark: "Tw", colors: ["#38bdf8", "#0ea5e9"] },
   typescript: { label: "typescript", mark: "Ts", colors: ["#3178c6", "#38bdf8"] },
   vite: { label: "vite", mark: "Vi", colors: ["#646cff", "#ffbd2e"] },
@@ -115,7 +115,7 @@ const PROJECT_LIST = [
     image: { src: "/assets/Juego.png", width: 1019, height: 576 },
     repo: "https://github.com/Kam24w/AURA",
     tech: ["unity", "csharp"],
-    tone: "indigo",
+    tone: "navy",
   },
   {
     id: "wanderai",
@@ -133,7 +133,7 @@ const PROJECT_LIST = [
     image: { src: "/assets/Vibra_app_smartwach.png", width: 873, height: 488 },
     repo: "https://github.com/Kam24w/Vibra",
     tech: ["kotlin", "compose", "wearos"],
-    tone: "sunset",
+    tone: "amber",
   },
   {
     id: "nexora",
@@ -161,10 +161,10 @@ export function isProjectId(value: unknown): value is ProjectId {
 type AiToolDef = { id: string; name: string; mark: string; tone: Tone };
 
 export const AI_TOOLS = [
-  { id: "chatgpt", name: "chatgpt", mark: "G", tone: "mint" },
-  { id: "copilot", name: "github copilot", mark: "C", tone: "violet" },
+  { id: "chatgpt", name: "chatgpt", mark: "G", tone: "emerald" },
+  { id: "copilot", name: "github copilot", mark: "C", tone: "slate" },
   { id: "claude", name: "claude", mark: "Cl", tone: "clay" },
-  { id: "v0", name: "v0", mark: "v0", tone: "ocean" },
+  { id: "v0", name: "v0", mark: "v0", tone: "blue" },
 ] as const satisfies readonly AiToolDef[];
 
 export type AiToolId = (typeof AI_TOOLS)[number]["id"];
@@ -174,10 +174,10 @@ export type AiToolId = (typeof AI_TOOLS)[number]["id"];
 type StackCategoryDef = { id: string; glyph: string; tone: Tone; items: readonly TechId[] };
 
 export const STACK = [
-  { id: "frontend", glyph: "</>", tone: "indigo", items: ["react", "nextjs", "tailwind", "typescript", "vite"] },
+  { id: "frontend", glyph: "</>", tone: "blue", items: ["react", "nextjs", "tailwind", "typescript", "vite"] },
   { id: "backend", glyph: "{ }", tone: "forest", items: ["nodejs", "python", "flask", "rest", "postgresql", "supabase"] },
-  { id: "mobile", glyph: "◎", tone: "ocean", items: ["kotlin", "compose", "wearos", "unity"] },
-  { id: "design", glyph: "✦", tone: "figma", items: ["figma", "git", "vscode"] },
+  { id: "mobile", glyph: "◎", tone: "cyan", items: ["kotlin", "compose", "wearos", "unity"] },
+  { id: "design", glyph: "✦", tone: "slate", items: ["figma", "git", "vscode"] },
 ] as const satisfies readonly StackCategoryDef[];
 
 export type StackCategoryId = (typeof STACK)[number]["id"];
@@ -187,9 +187,9 @@ export type StackCategoryId = (typeof STACK)[number]["id"];
 type TestimonialDef = { id: string; image: string; tone: Tone };
 
 export const TESTIMONIALS = [
-  { id: "peer", image: "/assets/testimonio_1.png", tone: "indigo" },
+  { id: "peer", image: "/assets/testimonio_1.png", tone: "blue" },
   { id: "teacher", image: "/assets/testimonio_2.png", tone: "sky" },
-  { id: "client", image: "/assets/testimonio_3.png", tone: "sunset" },
+  { id: "client", image: "/assets/testimonio_3.png", tone: "amber" },
 ] as const satisfies readonly TestimonialDef[];
 
 export type TestimonialId = (typeof TESTIMONIALS)[number]["id"];

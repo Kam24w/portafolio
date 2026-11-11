@@ -34,14 +34,14 @@ export default async function OpengraphImage() {
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          background: "linear-gradient(160deg, #0d1026 0%, #171a45 55%, #2a1f5c 100%)",
+          background: "linear-gradient(160deg, #0b1324 0%, #0e2440 55%, #123a5c 100%)",
         }}
       >
         <img src={bannerSrc} width={1200} height={300} alt="" style={{ objectFit: "cover" }} />
 
         <div style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 64px" }}>
           <div style={{ display: "flex", flexDirection: "column" }}>
-            <div style={{ fontSize: 20, letterSpacing: 5, color: "#9c9af7", textTransform: "uppercase" }}>
+            <div style={{ fontSize: 20, letterSpacing: 5, color: "#60a5fa", textTransform: "uppercase" }}>
               portafolio · escritorio interactivo
             </div>
             <div style={{ fontSize: 56, fontWeight: 700, color: "#ffffff", marginTop: 10 }}>{PROFILE.name}</div>

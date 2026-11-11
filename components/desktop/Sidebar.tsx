@@ -33,7 +33,7 @@ export function Sidebar() {
         type="button"
         aria-label={t.nav.home}
         onClick={() => openWindow("inicio")}
-        className="group relative flex size-10 items-center justify-center rounded-full bg-linear-135 from-accent to-[#9b5bf5] font-display text-[13px] font-bold text-white transition duration-150 hover:scale-110 hover:-rotate-6"
+        className="group relative flex size-10 items-center justify-center rounded-full bg-linear-135 from-accent to-[#0ea5c6] font-display text-[13px] font-bold text-white transition duration-150 hover:scale-110 hover:-rotate-6"
       >
         {PROFILE.initials}
         <span aria-hidden="true" className={tooltipClass}>
