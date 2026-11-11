@@ -26,7 +26,7 @@ export const PROFILE = {
   name: "frayder camilo lopez",
   initials: "fc",
   photo: "/assets/Foto_perfil_sin_fondo.png",
-  location: "cali, colombia · gmt-5",
+  location: "pasto, nariño, colombia · gmt-5",
   email: "freydercl2004@gmail.com",
   github: { href: "https://github.com/Kam24w", label: "github.com/Kam24w" },
   linkedin: {
