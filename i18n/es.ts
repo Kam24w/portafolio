@@ -7,17 +7,27 @@ export const es = {
       "portafolio interactivo estilo escritorio de frayder camilo lopez, desarrollador full stack en formación.",
   },
   boot: {
-    title: "sistema portafolio",
-    hint: "haz clic o presiona enter para entrar",
-    skip: "omitir carga del portafolio",
+    skip: "omitir arranque",
     greetings: { morning: "buenos días", afternoon: "buenas tardes", evening: "buenas noches" },
-    steps: {
-      system: "iniciando sistema",
-      projects: "cargando {n} proyectos",
-      apps: "instalando {n} apps",
-      widgets: "conectando widgets",
-      ready: "escritorio listo",
+    post: {
+      vendor: "FC-BIOS v2.0 · Frayder Camilo Systems",
+      labels: {
+        cpu: "procesador",
+        memory: "memoria",
+        apps: "aplicaciones",
+        stack: "stack",
+        network: "red",
+        location: "ubicación",
+      },
+      values: {
+        cpu: "ingeniería de software · full stack",
+        memory: "{n} proyectos verificados",
+        apps: "{n} instaladas",
+      },
+      booting: "iniciando FRAYDER OS",
+      hint: "pulsa cualquier tecla o haz clic para omitir",
     },
+    welcome: "bienvenido",
   },
   nav: {
     label: "navegación principal",

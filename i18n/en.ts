@@ -7,17 +7,27 @@ export const en = {
       "interactive desktop-style portfolio of frayder camilo lopez, full stack developer in training.",
   },
   boot: {
-    title: "portfolio system",
-    hint: "click or press enter to come in",
-    skip: "skip portfolio loading",
+    skip: "skip startup",
     greetings: { morning: "good morning", afternoon: "good afternoon", evening: "good evening" },
-    steps: {
-      system: "starting system",
-      projects: "loading {n} projects",
-      apps: "installing {n} apps",
-      widgets: "connecting widgets",
-      ready: "desktop ready",
+    post: {
+      vendor: "FC-BIOS v2.0 · Frayder Camilo Systems",
+      labels: {
+        cpu: "processor",
+        memory: "memory",
+        apps: "applications",
+        stack: "stack",
+        network: "network",
+        location: "location",
+      },
+      values: {
+        cpu: "software engineering · full stack",
+        memory: "{n} projects verified",
+        apps: "{n} installed",
+      },
+      booting: "starting FRAYDER OS",
+      hint: "press any key or click to skip",
     },
+    welcome: "welcome",
   },
   nav: {
     label: "main navigation",

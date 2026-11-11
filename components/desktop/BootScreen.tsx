@@ -1,29 +1,54 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { APPS } from "@/components/apps/registry";
-import { PROFILE, PROJECTS } from "@/data/portfolio";
+import { PROFILE, PROJECTS, TECH, type TechId } from "@/data/portfolio";
 import { useNow } from "@/hooks/useNow";
-import { useLocale } from "@/i18n/LocaleProvider";
 import type { Dictionary } from "@/i18n";
+import { localize } from "@/i18n/config";
+import { useLocale } from "@/i18n/LocaleProvider";
 import { cx } from "@/lib/cx";
+import { splitTime } from "./widgets/ClockWidget";
 
-const STEP_MS = 300;
-const HOLD_AFTER_LAST_STEP_MS = 400;
-const FADE_DURATION_MS = 600;
+/*
+ * Arranque estilo PC, en tres fases:
+ *   1. "post"   → pantalla tipo BIOS que revisa el sistema línea por línea
+ *   2. "splash" → logo de FRAYDER OS con indicador de carga
+ *   3. "login"  → bienvenida con la hora, el avatar y el nombre; luego se desvanece
+ * Cualquier tecla o clic lo omite. Si ya se vio en esta sesión (o el sistema
+ * pide reducir el movimiento), va directo a una bienvenida corta.
+ */
+
+type Phase = "post" | "splash" | "login" | "done";
+
+const SEEN_KEY = "fc-boot-seen";
+const POST_START_MS = 250;
+const POST_LINE_MS = 170;
+const POST_HOLD_MS = 900; // con "iniciando FRAYDER OS" en pantalla
+const SPLASH_MS = 1400;
+const LOGIN_MS = 1500;
+const QUICK_LOGIN_MS = 900;
+const FADE_MS = 600;
+
+/** Tecnologías que se listan en la línea "stack" de la BIOS. */
+const POST_STACK: readonly TechId[] = ["react", "nextjs", "kotlin", "unity", "python"];
 
 const fill = (template: string, n: number) => template.replace("{n}", String(n));
+const capitalizeWords = (text: string) => text.replace(/(^|\s)(\S)/g, (_, space: string, letter: string) => space + letter.toUpperCase());
 
-function bootSteps(t: Dictionary): string[] {
+function postLines(t: Dictionary, locale: Parameters<typeof localize>[1]) {
+  const { labels, values } = t.boot.post;
   return [
-    t.boot.steps.system,
-    fill(t.boot.steps.projects, PROJECTS.length),
-    fill(t.boot.steps.apps, APPS.length),
-    t.boot.steps.widgets,
-    t.boot.steps.ready,
+    { label: labels.cpu, value: values.cpu },
+    { label: labels.memory, value: fill(values.memory, PROJECTS.length) },
+    { label: labels.apps, value: fill(values.apps, APPS.length) },
+    { label: labels.stack, value: POST_STACK.map((id) => localize(TECH[id].label, locale)).join(" · ") },
+    { label: labels.network, value: PROFILE.github.label },
+    { label: labels.location, value: PROFILE.location.split("·")[0].trim() },
   ];
 }
+const POST_LINE_COUNT = 6;
 
 function greetingFor(date: Date, t: Dictionary): string {
   const hour = date.getHours();
@@ -32,113 +57,162 @@ function greetingFor(date: Date, t: Dictionary): string {
   return t.boot.greetings.evening;
 }
 
+const Spinner = ({ className }: { className?: string }) => (
+  <span aria-hidden="true" className={cx("inline-block rounded-full border-white/20 border-t-white motion-safe:animate-spin", className)} />
+);
+
+const LogoMark = ({ className }: { className?: string }) => (
+  <span className={cx("flex items-center justify-center bg-linear-135 from-[#1d4ed8] to-[#0ea5c6] font-display font-bold text-white", className)}>
+    {PROFILE.initials}
+  </span>
+);
+
 export function BootScreen() {
-  const { t } = useLocale();
-  const now = useNow(60_000);
-  const steps = bootSteps(t);
-  const [completed, setCompleted] = useState(0);
-  const [fading, setFading] = useState(false);
+  const { t, locale, dateLocale } = useLocale();
+  const now = useNow();
+  const [phase, setPhase] = useState<Phase>("post");
+  const [linesShown, setLinesShown] = useState(0);
   const [gone, setGone] = useState(false);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
-  /* avanza el registro de arranque línea por línea y luego se desvanece */
+  /** Avanza de fase, salvo que ya se haya terminado (por ejemplo, tras omitir). */
+  const advance = useCallback((next: Phase) => setPhase((current) => (current === "done" ? current : next)), []);
+
+  const finish = useCallback(() => {
+    setPhase("done");
+    setTimeout(() => setGone(true), FADE_MS);
+  }, []);
+
+  /* programa la secuencia completa (o la corta) */
   useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const timers: ReturnType<typeof setTimeout>[] = [];
-    const stepMs = reduceMotion ? 0 : STEP_MS;
+    const at = (ms: number, run: () => void) => timers.push(setTimeout(run, ms));
 
-    for (let i = 1; i <= steps.length; i++) {
-      timers.push(setTimeout(() => setCompleted(i), i * stepMs));
+    let seen = false;
+    try {
+      seen = sessionStorage.getItem(SEEN_KEY) === "1";
+      sessionStorage.setItem(SEEN_KEY, "1");
+    } catch {
+      /* sin almacenamiento: secuencia completa */
     }
-    const fadeAt = steps.length * stepMs + HOLD_AFTER_LAST_STEP_MS;
-    timers.push(setTimeout(() => setFading(true), fadeAt));
-    timers.push(setTimeout(() => setGone(true), fadeAt + FADE_DURATION_MS));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    overlayRef.current?.focus({ preventScroll: true }); // así Enter funciona sin hacer clic antes
+    if (seen || reduceMotion) {
+      at(0, () => advance("login"));
+      at(QUICK_LOGIN_MS, finish);
+    } else {
+      for (let i = 1; i <= POST_LINE_COUNT; i++) at(POST_START_MS + i * POST_LINE_MS, () => setLinesShown(i));
+      const splashAt = POST_START_MS + POST_LINE_COUNT * POST_LINE_MS + POST_HOLD_MS;
+      at(splashAt, () => advance("splash"));
+      at(splashAt + SPLASH_MS, () => advance("login"));
+      at(splashAt + SPLASH_MS + LOGIN_MS, finish);
+    }
     return () => timers.forEach(clearTimeout);
-  }, [steps.length]);
+  }, [advance, finish]);
+
+  /* cualquier tecla lo omite */
+  useEffect(() => {
+    if (gone) return;
+    window.addEventListener("keydown", finish);
+    return () => window.removeEventListener("keydown", finish);
+  }, [gone, finish]);
 
   if (gone) return null;
 
-  const skip = () => {
-    setFading(true);
-    setTimeout(() => setGone(true), FADE_DURATION_MS);
-  };
-
-  const progress = Math.round((completed / steps.length) * 100);
+  const lines = postLines(t, locale);
+  const time = now ? splitTime(now, dateLocale) : null;
 
   return (
     <div
-      ref={overlayRef}
       role="button"
       tabIndex={0}
       aria-label={t.boot.skip}
-      onClick={skip}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " " || event.key === "Escape") skip();
-      }}
+      onClick={finish}
       className={cx(
-        "fixed inset-0 z-200 flex items-center justify-center overflow-hidden outline-none",
-        "bg-[rgba(240,239,250,.55)] backdrop-blur-[26px] dark:bg-[rgba(8,8,22,.6)]",
-        "transition-[opacity,visibility] duration-600",
-        fading && "invisible opacity-0",
+        "fixed inset-0 z-200 cursor-pointer overflow-hidden bg-black outline-none select-none",
+        "transition-opacity duration-600",
+        phase === "done" && "pointer-events-none opacity-0",
       )}
     >
-      {/* luces de ambiente */}
-      <div aria-hidden="true" className="pointer-events-none absolute -top-32 -left-24 size-[420px] rounded-full bg-accent/30 blur-[110px]" />
-      <div aria-hidden="true" className="pointer-events-none absolute -right-24 -bottom-32 size-[420px] rounded-full bg-[#22d3ee]/25 blur-[110px]" />
+      {/* ---------- 1. BIOS ---------- */}
+      {phase === "post" && (
+        <div className="absolute inset-0 flex flex-col p-[clamp(20px,4vw,56px)] font-mono text-[clamp(11px,1.05vw,14px)] leading-relaxed text-[#b9c4d6]">
+          <header className="flex items-start justify-between gap-6">
+            <div>
+              <p className="text-white">{t.boot.post.vendor}</p>
+              <p className="text-[#6b7a90]">© 2026 · {PROFILE.github.label}</p>
+            </div>
+            <div className="flex items-center gap-3">
+              <LogoMark className="size-12 rounded-xl text-lg" />
+              <span className="font-display text-xs leading-tight font-bold tracking-[.3em] text-white uppercase">
+                frayder
+                <br />
+                <span className="text-[#38bdf8]">os</span>
+              </span>
+            </div>
+          </header>
 
-      <div
-        className={cx(
-          "glass relative w-[min(370px,calc(100%-40px))] rounded-[28px] px-7 pt-8 pb-6 text-center",
-          "transition-[scale,opacity,filter] duration-600 ease-[cubic-bezier(.4,0,.2,1)] starting:translate-y-3 starting:scale-95 starting:opacity-0",
-          fading && "scale-110 opacity-0 blur-sm",
-        )}
-      >
-        {/* avatar con anillo giratorio */}
-        <div className="relative mx-auto mb-4 size-24">
-          <div aria-hidden="true" className="absolute -inset-3 rounded-full bg-conic from-accent via-[#22d3ee] to-[#9b5bf5] opacity-50 blur-xl motion-safe:animate-spin motion-safe:[animation-duration:6s]" />
-          <div aria-hidden="true" className="absolute -inset-[3px] rounded-full bg-conic from-accent via-[#22d3ee] to-[#9b5bf5] motion-safe:animate-spin motion-safe:[animation-duration:4s]" />
-          <div className="relative size-full overflow-hidden rounded-full bg-linear-160 from-[#c7d2fe] to-[#5451d6]">
-            <Image src={PROFILE.photo} alt="" width={192} height={405} priority className="absolute top-1 left-1/2 w-[86%] max-w-none -translate-x-1/2" />
-          </div>
-        </div>
-
-        <p className="min-h-4 text-[11px] font-semibold tracking-[.18em] text-accent uppercase">{now ? greetingFor(now, t) : " "}</p>
-        <h1 className="mt-1 font-display text-2xl leading-tight font-semibold text-fg">{PROFILE.name}</h1>
-        <p className="mt-0.5 text-[13px] text-fg-muted">
-          {t.boot.title} <span className="text-fg-subtle">· v2</span>
-        </p>
-
-        {/* registro de arranque */}
-        <ol aria-live="polite" className="mt-5 rounded-2xl border border-glass-border bg-tint/8 px-3.5 py-2.5 text-left font-mono text-[11.5px] leading-6 text-fg-muted">
-          {steps.map((step, index) => {
-            const done = index < completed;
-            return (
-              <li
-                key={step}
-                className={cx("flex items-center gap-2 transition duration-300", done ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0")}
-              >
-                <span className={cx("text-ok", index === steps.length - 1 && "text-accent")}>{index === steps.length - 1 ? "●" : "✓"}</span>
-                {step}
+          <ul className="mt-[6vh] max-w-3xl space-y-1.5">
+            {lines.slice(0, linesShown).map((line) => (
+              <li key={line.label} className="flex gap-3 whitespace-pre">
+                <span className="text-[#7d8aa0] uppercase">{line.label.padEnd(14, ".")}</span>
+                <span className="truncate text-white">{line.value}</span>
+                <span className="ml-auto pl-4 text-[#22c55e]">[ OK ]</span>
               </li>
-            );
-          })}
-        </ol>
+            ))}
+          </ul>
 
-        {/* progreso */}
-        <div className="mt-4 flex items-center gap-3">
-          <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-tint/15">
-            <div
-              className="h-full rounded-full bg-linear-to-r from-accent to-[#22d3ee] transition-[width] duration-300 ease-out"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-          <span className="w-9 text-right font-mono text-[11px] text-fg-subtle tabular-nums">{progress}%</span>
+          {linesShown === POST_LINE_COUNT && (
+            <p className="mt-6 text-white">
+              {t.boot.post.booting}
+              <span aria-hidden="true" className="ml-1.5 inline-block h-[1.1em] w-[.6em] translate-y-[.2em] bg-white motion-safe:animate-blink" />
+            </p>
+          )}
+
+          <footer className="mt-auto flex justify-between gap-6 text-[#6b7a90]">
+            <span>{t.boot.post.hint}</span>
+            <span>v2.0.26</span>
+          </footer>
         </div>
+      )}
 
-        <p className="mt-4 text-[11px] text-fg-subtle">{t.boot.hint}</p>
-      </div>
+      {/* ---------- 2. logo + carga ---------- */}
+      {phase === "splash" && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-5 transition-opacity duration-500 starting:opacity-0">
+          <LogoMark className="size-24 rounded-[28px] text-4xl shadow-[0_0_90px_-10px_rgba(14,165,198,.65)]" />
+          <p className="font-display text-sm font-semibold tracking-[.5em] text-white/85 uppercase">frayder os</p>
+          <Spinner className="mt-8 size-8 border-[3px]" />
+        </div>
+      )}
+
+      {/* ---------- 3. bienvenida ---------- */}
+      {(phase === "login" || phase === "done") && (
+        <div className="absolute inset-0 transition-opacity duration-700 starting:opacity-0">
+          <div aria-hidden="true" className="absolute -inset-12 bg-[url('/assets/imagen_fondo_2.jpg')] bg-cover bg-center blur-2xl" />
+          <div aria-hidden="true" className="absolute inset-0 bg-[#060b16]/55" />
+
+          <div className={cx("relative flex h-full flex-col items-center justify-center text-white transition duration-600", phase === "done" && "scale-105")}>
+            <p className="flex items-baseline gap-2 font-dot leading-none font-black">
+              <span className="text-[clamp(64px,9vw,120px)] tabular-nums">{time?.time ?? "--:--"}</span>
+              {time?.period && <span className="text-2xl">{time.period}</span>}
+            </p>
+            <p className="mt-3 text-lg font-medium text-white/80 first-letter:uppercase">
+              {now?.toLocaleDateString(dateLocale, { weekday: "long", day: "numeric", month: "long" })}
+            </p>
+
+            <div className="mt-[8vh] flex flex-col items-center">
+              <span className="relative size-28 overflow-hidden rounded-full bg-linear-160 from-[#dbeafe] to-[#2563eb] ring-4 ring-white/25">
+                <Image src={PROFILE.photo} alt="" width={224} height={472} priority className="absolute top-1 left-1/2 w-[88%] max-w-none -translate-x-1/2" />
+              </span>
+              <p className="mt-4 font-display text-2xl font-semibold">{capitalizeWords(PROFILE.name)}</p>
+              <p className="mt-1 text-sm text-white/70">{now ? greetingFor(now, t) : " "}</p>
+              <p className="mt-7 flex items-center gap-3 text-sm text-white/85">
+                <Spinner className="size-4 border-2" />
+                {t.boot.welcome}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

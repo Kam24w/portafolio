@@ -16,13 +16,19 @@ import type {
 export type Dictionary = {
   meta: { title: string; description: string };
   boot: {
-    title: string;
-    hint: string;
     skip: string;
-    /** Saludo según la hora del día. */
+    /** Saludo según la hora del día (pantalla de bienvenida). */
     greetings: { morning: string; afternoon: string; evening: string };
-    /** Líneas del registro de arranque. `{n}` se reemplaza por un número. */
-    steps: { system: string; projects: string; apps: string; widgets: string; ready: string };
+    /** Pantalla tipo BIOS. `{n}` se reemplaza por un número. */
+    post: {
+      vendor: string;
+      labels: { cpu: string; memory: string; apps: string; stack: string; network: string; location: string };
+      values: { cpu: string; memory: string; apps: string };
+      booting: string;
+      hint: string;
+    };
+    /** Pantalla de bienvenida: estado mientras "inicia sesión". */
+    welcome: string;
   };
   nav: {
     label: string;

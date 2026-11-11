@@ -4,7 +4,7 @@ import { useNow } from "@/hooks/useNow";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 /** Separa "10:29 p. m." en hora ("10:29") y periodo ("p. m."), para mostrar el periodo en pequeño. */
-function splitTime(date: Date, locale: string): { time: string; period: string } {
+export function splitTime(date: Date, locale: string): { time: string; period: string } {
   const parts = new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit" }).formatToParts(date);
   const period = parts.find((part) => part.type === "dayPeriod")?.value ?? "";
   const time = parts

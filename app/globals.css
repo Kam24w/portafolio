@@ -73,6 +73,8 @@
   --animate-pop: pop 0.4s ease;
   /* barra del reproductor de proyectos: su duración es la de cada "canción" */
   --animate-progress: progress 6s linear forwards;
+  /* cursor de texto parpadeante (pantalla de BIOS) */
+  --animate-blink: blink 1s steps(2, start) infinite;
   /* barras del ecualizador del reproductor */
   --animate-eq: eq 0.9s ease-in-out infinite;
 
@@ -94,6 +96,9 @@
   }
   @keyframes load {
     to { width: 100%; }
+  }
+  @keyframes blink {
+    to { visibility: hidden; }
   }
   @keyframes eq {
     0%, 100% { transform: scaleY(0.35); }
