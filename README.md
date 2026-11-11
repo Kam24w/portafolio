@@ -15,6 +15,7 @@ Construido con **Next.js 16 (App Router)**, **React 19**, **TypeScript** y **Tai
 - **Enlaces compartibles:** la URL refleja la ventana enfocada (`?app=contacto`, `?app=proyectos&id=nexora`) y al abrir ese enlace se abre esa ventana. El detalle tiene un botón "copiar enlace".
 - **Open Graph:** `app/opengraph-image.tsx` genera la imagen de previsualización (1200×630) a partir del banner. En producción define `NEXT_PUBLIC_SITE_URL` con tu dominio (en Vercel se detecta solo).
 - **Tema claro/oscuro e idioma ES/EN:** se guardan en el navegador y se aplican antes de cargar la página (sin parpadeo). La primera vez, el idioma se elige según el navegador.
+- **CV descargable:** `npm run cv` genera `public/cv/frayder-camilo-lopez-cv-{es,en}.pdf` a partir de los mismos datos del sitio (proyectos, stack, experiencia) más los textos de `scripts/cv/content.ts` (perfil, educación, habilidades, idiomas). Usa Chrome instalado (otra ruta: variable `CHROME_PATH`) e internet para las fuentes. Vuelve a correrlo cada vez que cambies tus datos.
 - **Colores:** acento índigo `#5451d6`, tokens en `app/globals.css`.
 - **Tipografías:** Space Grotesk (títulos) e Inter (texto), con `next/font`.
 - **Accesibilidad:** foco visible, etiquetas `aria` traducidas y respeto a `prefers-reduced-motion`.
