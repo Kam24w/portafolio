@@ -3,7 +3,7 @@
  * años, tecnologías y colores. Los textos traducibles viven en `i18n/`
  * y se enlazan con estos datos por su `id`.
  */
-import type { Localized } from "@/i18n/config";
+import type { Locale, Localized } from "@/i18n/config";
 
 export type ExternalUrl = `https://${string}`;
 
@@ -44,10 +44,14 @@ export const PROFILE = {
 };
 
 /**
- * Ruta del CV en PDF dentro de `public/` (ej. "/cv/frayder-camilo-lopez.pdf").
- * Mientras sea `null`, el botón se muestra desactivado con "disponible pronto".
+ * CV en PDF por idioma, dentro de `public/`. Los genera `npm run cv`
+ * (scripts/cv/build-cv.mts) a partir de estos mismos datos.
+ * Si fuera `null`, el botón se muestra desactivado con "disponible pronto".
  */
-export const CV_URL: string | null = null;
+export const CV_URL: Readonly<Record<Locale, string>> | null = {
+  es: "/cv/frayder-camilo-lopez-cv-es.pdf",
+  en: "/cv/frayder-camilo-lopez-cv-en.pdf",
+};
 
 /* ---------- tecnologías ---------- */
 

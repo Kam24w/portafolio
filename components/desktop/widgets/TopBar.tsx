@@ -14,9 +14,10 @@ const circleClass =
 const cvClass =
   "flex h-10 shrink-0 items-center gap-1.5 rounded-full bg-linear-135 from-accent to-[#c026d3] px-3.5 text-sm font-bold text-white uppercase shadow-[0_8px_20px_-8px_var(--accent)] transition duration-150";
 
-/** Botón de CV: descarga el PDF si existe; si no, queda visible pero inactivo ("disponible pronto"). */
+/** Botón de CV: descarga el PDF del idioma activo; si no hay, queda visible pero inactivo ("disponible pronto"). */
 function CvButton() {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const href = CV_URL?.[locale];
   const content = (
     <>
       <Icon name="download" size={17} />
@@ -24,7 +25,7 @@ function CvButton() {
     </>
   );
 
-  if (!CV_URL) {
+  if (!href) {
     return (
       <button type="button" aria-disabled="true" title={t.cv.soon} aria-label={t.cv.soon} className={cx(cvClass, "cursor-not-allowed opacity-75")}>
         {content}
@@ -33,7 +34,7 @@ function CvButton() {
   }
 
   return (
-    <a href={CV_URL} download title={t.cv.download} aria-label={t.cv.download} className={cx(cvClass, "hover:scale-105 hover:brightness-110")}>
+    <a href={href} download title={t.cv.download} aria-label={t.cv.download} className={cx(cvClass, "hover:scale-105 hover:brightness-110")}>
       {content}
     </a>
   );
