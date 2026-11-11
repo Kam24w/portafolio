@@ -30,8 +30,11 @@ export const es = {
     label: "escritorio del portafolio",
     openToWork: "abierto a oportunidades",
     greeting: "¡hola, visitante!!",
-    badge: "full stack developer • disponible • 2026 • ",
-    badgeAction: "¿hablamos? abrir contacto",
+    availability: {
+      status: "disponible · 2026",
+      title: "¿trabajamos juntos?",
+      action: "abrir contacto",
+    },
     areas: { web: "web", mobile: "móvil", games: "juegos", backend: "backend" },
   },
   window: { close: "cerrar", minimize: "minimizar", maximize: "maximizar", restore: "restaurar" },

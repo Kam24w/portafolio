@@ -37,10 +37,8 @@ export type Dictionary = {
     label: string;
     openToWork: string;
     greeting: string;
-    /** Texto que gira en el sello circular (termina en separador). */
-    badge: string;
-    /** Etiqueta accesible del sello: abre contacto. */
-    badgeAction: string;
+    /** Tarjeta "disponible" junto a la foto: estado, invitación y etiqueta accesible (abre contacto). */
+    availability: { status: string; title: string; action: string };
     /** Área de cada sticker flotante. */
     areas: { web: string; mobile: string; games: string; backend: string };
   };

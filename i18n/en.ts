@@ -30,8 +30,11 @@ export const en = {
     label: "portfolio desktop",
     openToWork: "open to opportunities",
     greeting: "hi there, visitor!!",
-    badge: "full stack developer • available • 2026 • ",
-    badgeAction: "let's talk? open contact",
+    availability: {
+      status: "available · 2026",
+      title: "let's work together?",
+      action: "open contact",
+    },
     areas: { web: "web", mobile: "mobile", games: "games", backend: "backend" },
   },
   window: { close: "close", minimize: "minimize", maximize: "maximize", restore: "restore" },
