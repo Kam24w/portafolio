@@ -43,8 +43,8 @@ export function ProfileFigure() {
       <Image
         src={PROFILE.photo}
         alt={t.profile.photoAlt}
-        width={427}
-        height={900}
+        width={344}
+        height={725}
         quality={100}
         priority
         sizes="(max-width: 640px) 60vw, 40vw"
