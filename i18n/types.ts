@@ -79,6 +79,7 @@ export type Dictionary = {
       sourceCode: string;
       share: string;
       linkCopied: string;
+      video: string;
     };
     items: Record<
       ProjectId,

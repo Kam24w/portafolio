@@ -103,6 +103,7 @@ export const es = {
       sourceCode: "código en github",
       share: "copiar enlace",
       linkCopied: "¡enlace copiado!",
+      video: "video promocional",
     },
     // BORRADOR: problema, rol y aprendizajes se redactaron a partir del código de cada
     // repositorio. Revísalos y ajústalos a tu experiencia real.

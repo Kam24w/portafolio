@@ -101,6 +101,24 @@ export function ProjectDetailApp({ project }: { project: Project }) {
         </button>
       </div>
 
+      {/* video promocional: la app en funcionamiento */}
+      {project.video && (
+        <section className="mb-4">
+          <h4 className={sectionTitleClass}>{labels.video}</h4>
+          <div className={cx(TONE_GRADIENT[project.tone], "overflow-hidden rounded-[14px] p-[3px]")}>
+            <video
+              src={project.video}
+              poster={project.image.src}
+              controls
+              playsInline
+              preload="metadata"
+              aria-label={`${labels.video} · ${project.name}`}
+              className="block max-h-[420px] w-full rounded-[11px] bg-[#0d1026]"
+            />
+          </div>
+        </section>
+      )}
+
       {/* problema y rol */}
       <div className="mb-4 grid gap-2.5 @md:grid-cols-2">
         <section className={cx(cardClass, "p-3")}>

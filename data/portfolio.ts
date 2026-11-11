@@ -100,6 +100,8 @@ type ProjectDef = {
   year: number;
   /** Captura con sus dimensiones reales, para mostrarla sin recortes en la vista de detalle. */
   image: { src: string; width: number; height: number };
+  /** Video promocional (mp4 h.264) que muestra la app en funcionamiento. */
+  video?: string;
   repo: ExternalUrl;
   /** Demo en vivo. Si no existe, el botón no se muestra. */
   demo?: ExternalUrl;
@@ -122,6 +124,7 @@ const PROJECT_LIST = [
     name: "WanderAI",
     year: 2026,
     image: { src: "/assets/WanderAI_app_mobile.png", width: 355, height: 492 },
+    video: "/assets/WanderAI_Vibra_promo.mp4",
     repo: "https://github.com/Kam24w/WanderAI",
     tech: ["kotlin", "compose"],
     tone: "sky",
@@ -131,6 +134,7 @@ const PROJECT_LIST = [
     name: "Vibra",
     year: 2026,
     image: { src: "/assets/Vibra_app_smartwach.png", width: 873, height: 488 },
+    video: "/assets/WanderAI_Vibra_promo.mp4",
     repo: "https://github.com/Kam24w/Vibra",
     tech: ["kotlin", "compose", "wearos"],
     tone: "amber",
@@ -140,6 +144,7 @@ const PROJECT_LIST = [
     name: "Nexora",
     year: 2026,
     image: { src: "/assets/Nexora_app_pc.png", width: 855, height: 430 },
+    video: "/assets/Nexora_promo.mp4",
     repo: "https://github.com/Kam24w/Nexora",
     tech: ["python", "flask", "groq", "react", "typescript", "tailwind", "supabase"],
     tone: "teal",

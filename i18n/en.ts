@@ -103,6 +103,7 @@ export const en = {
       sourceCode: "code on github",
       share: "copy link",
       linkCopied: "link copied!",
+      video: "promo video",
     },
     // DRAFT: keep in sync with the spanish version once reviewed.
     items: {
